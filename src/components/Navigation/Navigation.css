@@ -1,0 +1,72 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 70px;
+}
+
+.navigation_logged {
+  flex: 0 1 100%;
+}
+
+.navigation__links {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  padding-left: 0;
+}
+
+.navigation__link {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.38;
+  margin: 0;
+}
+
+.navigation__link_logged {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.navigation__account {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 0.92;
+  margin: 0;
+}
+
+.navigation__account-icon {
+  background: url('../../images/account-icon.svg');
+  width: 26px;
+  height: 26px;
+}
+
+.navigation__registry {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  margin: 0;
+}
+
+.navigation__login {
+  text-decoration: none;
+}
+
+.navigation__login-button {
+  margin: 0;
+  margin-left: 30px;
+  background-color: #3DDC84;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 20px;
+  color: #000;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+}
