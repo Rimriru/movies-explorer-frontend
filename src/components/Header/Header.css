@@ -1,6 +1,6 @@
 .header {
   width: 100%;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   padding-top: 18px;
   display: flex;
   justify-content: space-between;
@@ -9,6 +9,10 @@
 
 .header_logged {
   gap: 44px;
+}
+
+.header_main {
+  background-color: #073042;
 }
 
 .logo {

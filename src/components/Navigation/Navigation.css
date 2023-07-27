@@ -23,6 +23,11 @@
   font-weight: 500;
   line-height: 1.38;
   margin: 0;
+  transition: opacity .3s ease-in-out;
+}
+
+.navigation__link:hover {
+  opacity: .8;
 }
 
 .navigation__link_logged {
@@ -51,10 +56,20 @@
   font-weight: 500;
   line-height: 1.33;
   margin: 0;
+  transition: opacity .3s ease-in-out;
+}
+
+.navigation__registry:hover {
+  opacity: .8;
 }
 
 .navigation__login {
   text-decoration: none;
+  transition: opacity .3s ease-in-out;
+}
+
+.navigation__login:hover {
+  opacity: .8;
 }
 
 .navigation__login-button {
@@ -64,9 +79,10 @@
   border: none;
   border-radius: 3px;
   padding: 8px 20px;
-  color: #000;
+  color: var(--text-color-black);
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
   line-height: 1.33;
 }
+
