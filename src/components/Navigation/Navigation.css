@@ -6,7 +6,7 @@
 }
 
 .navigation_logged {
-  flex: 0 1 100%;
+  flex: 0 1 calc(904px + 54px + 100px);
 }
 
 .navigation__links {
@@ -86,3 +86,8 @@
   line-height: 1.33;
 }
 
+@media screen and (max-width: 900px) {
+  .navigation {
+    margin-right: 30px;
+  }
+}

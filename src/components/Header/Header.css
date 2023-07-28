@@ -1,5 +1,4 @@
 .header {
-  width: 100%;
   margin: 0 auto;
   padding-top: 18px;
   display: flex;
@@ -22,3 +21,15 @@
   flex-shrink: 0;  
   margin-left: 70px;
 }
+
+@media screen and (max-width: 900px) {
+  .logo {
+    margin-left: 30px;
+  }
+}
+
+/* @media screen and (max-width: 680px) {
+  .header {
+    max-width: 500px;
+  }
+} */

@@ -1,9 +1,15 @@
 .heading {
-  margin: 0 70px;
   font-size: 22px;
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.88px;
   padding-bottom: 23px;
   border-bottom: 1px solid #DADADA;;
+}
+
+@media screen and (max-width: 400px) {
+  .heading {
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
 }
