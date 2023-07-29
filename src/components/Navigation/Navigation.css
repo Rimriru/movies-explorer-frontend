@@ -6,7 +6,7 @@
 }
 
 .navigation_logged {
-  flex: 0 1 calc(904px + 54px + 100px);
+  width: 100%;
 }
 
 .navigation__links {
@@ -14,6 +14,7 @@
   display: flex;
   gap: 16px;
   padding-left: 0;
+  margin: 0;
 }
 
 .navigation__link {
@@ -89,5 +90,27 @@
 @media screen and (max-width: 900px) {
   .navigation {
     margin-right: 30px;
+  }
+
+  /* .navigation__login {
+    margin-right: 30px;
+  } */
+}
+
+@media screen and (max-width: 400px) {
+  .navigation {
+    margin-right: 14px;
+  }
+
+  .navigation__registry {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  .navigation__login-button {
+    margin-left: 14px;
+    padding: 5px 12px;
+    font-size: 10px;
+    line-height: 1.6;
   }
 }

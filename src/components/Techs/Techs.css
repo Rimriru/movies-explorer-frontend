@@ -1,12 +1,12 @@
 .techs {
   background-color: #272727;
-  padding: 100px 70px;
+  padding: 100px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .techs__title {
+  max-width: 600px;
   margin: 90px auto 26px;
   text-align: center;
   font-size: 50px;
@@ -31,6 +31,7 @@
   display: flex;
   gap: 10px;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .techs__list-item {
@@ -50,7 +51,7 @@
 
 @media screen  and (max-width: 900px) {
   .techs {
-    padding: 90px 50px;
+    padding: 90px 0;
   }
 
   .techs__title {
@@ -76,8 +77,42 @@
 
 @media screen and (max-width: 700px) {
   .techs__list {
-    max-width: calc(1280px - 60px * 2 - 84px * 7 - 10px * 6);
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .techs {
+    padding: 70px 0;
+    background-color: transparent;
+  }
+
+  .techs__list {
+    max-width: calc(84px * 3 + 10px * 2);
+  }
+
+  .techs__title {
+    margin: 60px auto 24px;
+    max-width: 292px;
+    font-size: 30px;
+    line-height: normal;
+    letter-spacing: -1.2px;
+  }
+
+  .techs__text {
+    margin: 0 auto 50px;
+    max-width: 292px;
+    font-size: 11px;
+    line-height: 1.45;
+    letter-spacing: -0.44px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .techs__list {
+    max-width: calc(84px * 2 + 10px);
+    justify-content: flex-start;
   }
 }

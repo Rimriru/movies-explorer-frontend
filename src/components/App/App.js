@@ -9,7 +9,7 @@ import { headerRoutes, footerRoutes } from "../../utils/constants.js";
 function App() {
   return (
     <>
-      {headerRoutes.find(route => window.location.pathname === route) && <Header isLoggedIn={true}/>}
+      {headerRoutes.find(route => window.location.pathname === route) && <Header isLoggedIn={false}/>}
       <Routes>
         <Route path='/' element={<Main />}/>
         <Route path='/movies' element={<Movies />}/>
