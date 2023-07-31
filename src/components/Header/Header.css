@@ -21,52 +21,6 @@
   margin-left: 70px;
 }
 
-.header__burger-btn {
-  display: none;
-  width: 28px;
-  height: 28px;
-  position: relative;
-  cursor: pointer;
-  z-index: 100;
-}
-
-.header__burger-btn::after {
-  content: '';
-  width: 28px;
-  height: 3px;
-  position: absolute;
-  bottom: 0;
-  background-color: #fff;
-}
-
-.header__burger-btn::before {
-  content: '';
-  width: 28px;
-  height: 3px;
-  position: absolute;
-  top: 0;
-  background-color: #fff;
-}
-
-.header__burger-btn_showed {
-  display: block;
-  margin-right: 35px;
-}
-
-.header__burger-btn_clicked {
-  position: fixed;
-  right: 0px;
-  top: 23px;
-}
-
-.header__burger-center {
-  width: 28px;
-  height: 3px;
-  position: absolute;
-  top: 13px;
-  background-color: #fff;
-}
-
 @media screen and (max-width: 900px) {
   .logo {
     margin-left: 30px;
