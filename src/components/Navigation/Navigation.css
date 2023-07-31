@@ -5,8 +5,6 @@
   margin-right: 70px;
 }
 
-<<<<<<< Updated upstream
-=======
 .navigation_mobile {
   visibility: hidden;
   opacity: 0;
@@ -22,13 +20,10 @@
   transition: all .3s ease-in-out;
 }
 
->>>>>>> Stashed changes
 .navigation_logged {
   width: 100%;
 }
 
-<<<<<<< Updated upstream
-=======
 .navigation_opened {
   transform: translateX(0);
   visibility: visible;
@@ -49,7 +44,6 @@
   translate: -100%;
 }
 
->>>>>>> Stashed changes
 .navigation__links {
   list-style: none;
   display: flex;
@@ -78,14 +72,11 @@
   align-items: center;
 }
 
-<<<<<<< Updated upstream
-=======
 .navigation__link_current-mobile {
   border-bottom: 2px solid currentColor;
   padding-bottom: 4px;
 }
 
->>>>>>> Stashed changes
 .navigation__account {
   font-size: 13px;
   font-weight: 500;
@@ -140,17 +131,10 @@
   .navigation {
     margin-right: 30px;
   }
-
-  /* .navigation__login {
-    margin-right: 30px;
-  } */
 }
 
 @media screen and (max-width: 400px) {
   .navigation {
-<<<<<<< Updated upstream
-    margin-right: 14px;
-=======
     margin: 0;
   }
 
@@ -184,7 +168,6 @@
   .navigation_mobile {
     width: 100%;
     max-width: 100%;
->>>>>>> Stashed changes
   }
 
   .navigation__registry {

@@ -21,8 +21,6 @@
   margin-left: 70px;
 }
 
-<<<<<<< Updated upstream
-=======
 .header__burger-btn {
   display: none;
   width: 28px;
@@ -86,7 +84,6 @@
   background: transparent;
 }
 
->>>>>>> Stashed changes
 @media screen and (max-width: 900px) {
   .logo {
     margin-left: 30px;
