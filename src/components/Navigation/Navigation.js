@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useIsMobile from "../../utils/windowResize";
 import "./Navigation.css";
 
 export default function Navigation({ isLoggedIn, isNavigationOpened, isMain }) {
   const isMobile = useIsMobile();
-  const isMovies = window.location.pathname === '/movies';
-  const isSavedMovies = window.location.pathname === '/saved-movies';
+  const currentLocation = useLocation();
+  const isMovies = currentLocation.pathname === '/movies';
+  const isSavedMovies = currentLocation.pathname === '/saved-movies';
 
   return (
     <>
@@ -17,17 +18,17 @@ export default function Navigation({ isLoggedIn, isNavigationOpened, isMain }) {
         >
           <ul className="navigation__links">
             {isMobile && <li>
-              <Link to="/" className={`navigation__link ${isMain ? "navigation__link_current" : ""}`}>
+              <Link to="/" className={`navigation__link ${isMain && isMobile ? "navigation__link_current-mobile" : ""}`}>
                 Главная
               </Link>
             </li>}
             <li>
-              <Link to="/movies" className={`navigation__link ${isMovies ? "navigation__link_current" : ""}`}>
+              <Link to="/movies" className={`navigation__link ${isMovies && isMobile ? "navigation__link_current-mobile" : ""}`}>
                 Фильмы
               </Link>
             </li>
             <li>
-              <Link to="/saved-movies" className={`navigation__link ${isSavedMovies ? "navigation__link_current" : ""}`}>
+              <Link to="/saved-movies" className={`navigation__link ${isSavedMovies && isMobile ? "navigation__link_current-mobile" : ""}`}>
                 Сохранённые фильмы
               </Link>
             </li>
