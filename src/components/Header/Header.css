@@ -21,6 +21,72 @@
   margin-left: 70px;
 }
 
+<<<<<<< Updated upstream
+=======
+.header__burger-btn {
+  display: none;
+  width: 28px;
+  height: 23px;
+  position: relative;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.header__burger-btn::before {
+  content: '';
+  width: 28px;
+  height: 3px;
+  position: absolute;
+  top: 0;
+  background-color: #fff;
+  transition: top ease .3s, transform ease .3s .3s;
+}
+
+.header__burger-btn::after {
+  content: '';
+  width: 28px;
+  height: 3px;
+  position: absolute;
+  bottom: 0;
+  background-color: #fff;
+  transition: transform ease-out .2s;
+}
+
+.header__burger-btn_showed {
+  display: block;
+  margin-right: 37px;
+}
+
+.header__burger-btn_clicked {
+  position: fixed;
+  right: 0px;
+  top: 36px;
+}
+
+.header__burger-btn_clicked.header__burger-btn::before  {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.header__burger-btn_clicked.header__burger-btn::after {
+  top: 0;
+  transform:rotate(-45deg);
+}
+
+.header__burger-center {
+  width: 28px;
+  height: 3px;
+  position: absolute;
+  top: 10px;
+  background: #fff;
+  transition: background ease-in .15s;
+}
+
+.header__burger-btn_clicked .header__burger-center {
+  background: transparent;
+}
+
+>>>>>>> Stashed changes
 @media screen and (max-width: 900px) {
   .logo {
     margin-left: 30px;
@@ -30,5 +96,27 @@
 @media screen and (max-width: 400px) {
   .logo {
     margin-left: 14px;
+  }
+
+  .header__burger-btn {
+    margin-right: 15px;
+    width: 22px;
+    height: 18.5px;
+  }
+
+  .header__burger-btn::before {
+    height: 2.5px;
+    width: 22px;
+  }
+
+  .header__burger-btn::after {
+    height: 2.5px;
+    width: 22px;
+  }
+
+  .header__burger-center {
+    height: 2.5px;
+    width: 22px;
+    top: 8px;
   }
 }
