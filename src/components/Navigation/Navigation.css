@@ -39,7 +39,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #202020;
+  background-color: #000;
   opacity: 0;
   visibility: hidden;
   translate: -100%;
@@ -161,9 +161,14 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   .navigation {
     margin: 0;
+  }
+
+  .navigation_mobile {
+    width: 100%;
+    max-width: 100%;
   }
 
   .navigation_opened::before {
@@ -185,17 +190,6 @@
 
   .navigation__link_logged {
     margin-bottom: 46px;
-  }
-
-  .navigation__login-button {
-    margin-right: 30px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .navigation_mobile {
-    width: 100%;
-    max-width: 100%;
   }
 
   .navigation__registry {

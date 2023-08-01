@@ -1,0 +1,61 @@
+.movie-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-card__image {
+  width: 100%;
+  margin-bottom: 14px;
+  object-fit: cover;
+  object-position: center;
+  width: 270px;
+  height: 151px;
+}
+
+.movie-card__container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.movie-card__title {
+  max-width: 226px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  height: 32px;
+}
+
+.movie-card__like-btn {
+  background: url('../../images/like-btn.svg');
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  opacity: 1;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.movie-card__like-btn:hover {
+  opacity: .8;
+}
+
+.movie-card__like-btn_active {
+  background: url('../../images/like-btn-active.svg');
+}
+
+.movie-card__like-btn_remove {
+  background: url('../../images/like-btn-remove.svg');
+}
+
+.movie-card__duration {
+  border-top: var(--line-color) 1px solid;
+  padding-top: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--text-color-dimmed);
+  margin: 0;
+}

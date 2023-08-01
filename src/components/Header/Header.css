@@ -63,12 +63,12 @@
 
 .header__burger-btn_clicked.header__burger-btn::before  {
   top: 0;
-  transform: rotate(45deg);
+  transform: rotate(135deg);
 }
 
 .header__burger-btn_clicked.header__burger-btn::after {
   top: 0;
-  transform:rotate(-45deg);
+  transform:rotate(-135deg);
 }
 
 .header__burger-center {
@@ -96,18 +96,18 @@
   }
 
   .header__burger-btn {
-    margin-right: 15px;
+    margin-right: 22px;
     width: 22px;
-    height: 18.5px;
+    height: 19px;
   }
 
   .header__burger-btn::before {
-    height: 2.5px;
+    height: 2px;
     width: 22px;
   }
 
   .header__burger-btn::after {
-    height: 2.5px;
+    height: 2px;
     width: 22px;
   }
 

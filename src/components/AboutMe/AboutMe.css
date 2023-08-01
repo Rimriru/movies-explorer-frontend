@@ -53,6 +53,12 @@
   border-radius: 12px;
 }
 
+@media screen and (max-width: 1020px) {
+  .about-me__info {
+    flex-basis: 500px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .about-me {
     padding: 92px 0 90px;
