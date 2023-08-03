@@ -40,7 +40,7 @@
   flex-shrink: 0;
   margin: 0 30px 0 21.5px;
   border: none;
-  background: #4285F4;
+  background: var(--links-and-buttons-color);
   border-radius: 48px;
   padding: 8px 10.35px;
   color: var(--text-color);
@@ -59,10 +59,6 @@
 }
 
 @media screen and (max-width: 600px) {
-  .search {
-    margin: 98px 10px 109px;
-    width: calc(100% - 10px * 2);
-  }
 
   .search__form {
     flex-wrap: wrap;
@@ -82,5 +78,12 @@
 
   .search__submit-btn {
     margin: 0 19px 0 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .search {
+    margin: 98px 10px 109px;
+    width: calc(100% - 10px * 2);
   }
 }

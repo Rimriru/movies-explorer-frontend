@@ -9,7 +9,7 @@
   visibility: hidden;
   opacity: 0;
   max-width: 68%;
-  height: 100vh;
+  height: 100dvh;
   position: fixed;
   bottom: 0;
   right: 0;

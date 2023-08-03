@@ -24,7 +24,7 @@ export default function Header({ isLoggedIn }) {
       <Link to="/">
         <div className="logo"></div>
       </Link>
-      <Navigation isLoggedIn={isLoggedIn} isMobile={isMobile} isNavigationOpened={isNavigationOpened}
+      <Navigation isLoggedIn={isLoggedIn} isMobile={isMobile} isNavigationOpened={isNavigationOpened} setIsNavigationOpened={setIsNavigationOpened}
       isMain={isMain}></Navigation>
       <div
         className={`header__burger-btn ${

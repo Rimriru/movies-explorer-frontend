@@ -102,6 +102,34 @@ const moviesArray = [
     link: firstMoviePath,
     duration: "1ч 42м",
   },
+  {
+    title: "Когда я думаю о Германии ночью",
+    link: firstMoviePath,
+    duration: "1ч 42м",
+  },
+  {
+    title: "Когда я думаю о Германии ночью",
+    link: firstMoviePath,
+    duration: "1ч 42м",
+  },
 ];
 
-export { headerRoutes, footerRoutes, moviesArray };
+const savedMoviesArray = [
+  {
+    title: "White Noise",
+    link: "https://media.cnn.com/api/v1/images/stellar/prod/221226145233-01-white-noise.jpg?c=original",
+    duration: "2ч 16м",
+  },
+  {
+    title: "Marriage Story",
+    link: "https://static01.nyt.com/images/2019/11/05/arts/05marriage1/05marriage1-superJumbo-v2.jpg",
+    duration: "2ч 16м",
+  },
+  {
+    title: "Barbie",
+    link: "https://hips.hearstapps.com/vidthumb/images/margot-robbie-ryan-gosling-barbie-official-trailer-646f88e93630e.jpg",
+    duration: "1ч 54м",
+  },
+];
+
+export { headerRoutes, footerRoutes, moviesArray, savedMoviesArray };
