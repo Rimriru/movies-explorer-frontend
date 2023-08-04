@@ -2,7 +2,7 @@
 import firstMoviePath from "../images/first-movie-image.jpg";
 import secondMoviePath from "../images/second-movie-image.jpg";
 
-const headerRoutes = ['/', '/movies', '/saved-movies', '/account'];
+const headerRoutes = ['/', '/movies', '/saved-movies', '/profile'];
 
 const footerRoutes = ['/', '/movies', '/saved-movies'];
 

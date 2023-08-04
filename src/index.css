@@ -8,6 +8,7 @@
   --background-for-some-elements: #303030;
   --line-color: #424242;
   --links-and-buttons-color: #4285F4;
+  --error-color: #EE3465;
 }
 
 .page {
@@ -20,4 +21,5 @@
   display: flex;
   flex-direction: column;
   color: var(--text-color);
+  height: 100dvh;
 }

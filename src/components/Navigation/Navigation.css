@@ -78,6 +78,10 @@
   padding-bottom: 4px;
 }
 
+.navigation__link_current-desktop {
+  font-weight: 500;
+}
+
 .navigation__account {
   font-size: 13px;
   font-weight: 500;
@@ -154,6 +158,7 @@
   .navigation__link {
     font-size: 18px;
     line-height: normal;
+    font-weight: 500;
   }
 
   .navigation__link_logged {
