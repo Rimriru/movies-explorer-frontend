@@ -17,6 +17,11 @@
   font-family: 'Inter', sans-serif;
   background-color: #202020;
   margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   display: flex;
   flex-direction: column;

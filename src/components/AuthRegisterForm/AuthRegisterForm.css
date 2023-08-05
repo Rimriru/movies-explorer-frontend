@@ -1,5 +1,6 @@
 .form {
   width: 100%;
+  display: contents;
 }
 
 .form__submit-btn {

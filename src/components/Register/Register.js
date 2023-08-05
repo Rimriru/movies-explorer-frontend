@@ -1,4 +1,5 @@
 import AuthLoginForm from "../AuthRegisterForm/AuthRegisterForm";
+import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
@@ -30,6 +31,7 @@ export default function Register() {
           />
         </label>
         <span className="auth-content__error auth-content__error_visible">Что-то пошло не так...</span>
+        <ApiErrorMessage placement="register" />
       </AuthLoginForm>
     </section>
   );

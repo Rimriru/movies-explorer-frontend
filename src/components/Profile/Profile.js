@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import "./Profile.css";
 
 export default function Profile({ onSignOut }) {
@@ -66,7 +67,7 @@ export default function Profile({ onSignOut }) {
         </div>
       ) : (
         <>
-          <span className="profile__error">При обновлении профиля произошла ошибка.</span>
+          <ApiErrorMessage placement="profile" />
           <button className="profile__submit-btn" type="submit">
             Сохранить
           </button>
