@@ -44,7 +44,7 @@ export default function Navigation({
                 to="/movies"
                 className={`navigation__link ${
                   isMovies && isMobile ? "navigation__link_current-mobile" : ""
-                }${isMovies ? "navigation__link_current-desktop" : ""}`}
+                } ${isMovies ? "navigation__link_current-desktop" : ""}`}
                 onClick={handleLinkClick}
               >
                 Фильмы
@@ -57,7 +57,7 @@ export default function Navigation({
                   isSavedMovies && isMobile
                     ? "navigation__link_current-mobile"
                     : ""
-                }${isSavedMovies ? "navigation__link_current-desktop" : ""}`}
+                } ${isSavedMovies ? "navigation__link_current-desktop" : ""}`}
                 onClick={handleLinkClick}
               >
                 Сохранённые фильмы
@@ -75,10 +75,10 @@ export default function Navigation({
         </nav>
       ) : (
         <nav className="navigation">
-          <Link to="/sign-up" className="navigation__registry">
+          <Link to="/signup" className="navigation__registry">
             Регистрация
           </Link>
-          <Link to="/sign-in" className="navigation__login">
+          <Link to="/signin" className="navigation__login">
             <button className="navigation__login-button">Войти</button>
           </Link>
         </nav>

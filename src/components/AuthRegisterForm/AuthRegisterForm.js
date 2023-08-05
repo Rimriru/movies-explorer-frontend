@@ -10,7 +10,7 @@ export default function AuthLoginForm({ children, isRegister }) {
         </button>
         <p className="form__text">
           {isRegister ? "Уже зарегистрированы?" : "Ещё не зарегистрированы?"}
-          <Link className="form__link" to={`${isRegister ? "/sign-in" : "/sign-up"}`}>{isRegister ? "Войти" : "Регистрация"}</Link>
+          <Link className="form__link" to={`${isRegister ? "/signin" : "/signup"}`}>{isRegister ? "Войти" : "Регистрация"}</Link>
         </p>
     </form>
   );
