@@ -65,7 +65,7 @@ export default function Navigation({
             </li>
           </ul>
           <Link
-            to="/account"
+            to="/profile"
             className="navigation__link navigation__link_logged"
             onClick={handleLinkClick}
           >

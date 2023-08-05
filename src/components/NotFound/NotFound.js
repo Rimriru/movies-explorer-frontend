@@ -2,9 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import "./NotFound.css";
 
 export default function NotFound() {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
-  const handleBackLinkClick = () => navigation(-1, { replace: true });
+  const handleBackLinkClick = () => navigate(-1, { replace: true });
 
   return (
     <section className="not-found">

@@ -45,7 +45,7 @@
   border-bottom: var(--links-and-buttons-color) 1px solid;
 }
 
-.auth-content__input_errored {
+.auth-content__input:invalid {
   color: var(--error-color);
 }
 

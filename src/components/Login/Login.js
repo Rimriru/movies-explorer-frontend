@@ -12,7 +12,7 @@ export default function Login() {
       <AuthRegisterForm>
         <label className="auth-content__label" htmlFor="email">
           E-mail
-          <input className="auth-content__input" name="email" type="email" />
+          <input className="auth-content__input" name="email" type="email" required />
         </label>
         <span className="auth-content__error"></span>
         <label className="auth-content__label" htmlFor="password">
