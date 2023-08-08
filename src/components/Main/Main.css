@@ -1,0 +1,28 @@
+.heading {
+  margin: 0 70px;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.88px;
+  padding-bottom: 23px;
+  border-bottom: 1px solid #DADADA;
+}
+
+@media screen and (max-width: 900px) {
+  .heading {
+    margin: 0 50px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .heading {
+    font-size: 18px;
+    letter-spacing: -0.72px;
+    margin: 0 18px;
+    padding-bottom: 28px;
+  }
+
+  .heading:nth-of-type(2) {
+    border-bottom: 1px solid #000;
+  }
+}
