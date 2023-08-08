@@ -13,6 +13,12 @@
   position: relative;
   width: 36px;
   height: 20px;
+  opacity: 1;
+  transition: .3s ease-in-out;
+}
+
+.filter-checkbox__switch:hover {
+  opacity: .8;
 }
 
 .filter-checkbox__input {
@@ -57,6 +63,12 @@ input[type="checkbox"]:checked + .filter-checkbox__slider:after {
   font-weight: 400;
   line-height: 1.38;
   cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .filter-checkbox {
+    padding-left: 19px;
+  }
 }
 
 @media screen and (max-width: 600px) {

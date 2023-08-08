@@ -6,7 +6,7 @@ export default function SearchForm() {
     <section className="search">
       <form className="search__form">
         <div className="search__loupe"></div>
-        <input className="search__input" placeholder="Фильм"></input>
+        <input className="search__input" placeholder="Фильм" required></input>
         <button className="search__submit-btn" type="submit">
           Найти
         </button>

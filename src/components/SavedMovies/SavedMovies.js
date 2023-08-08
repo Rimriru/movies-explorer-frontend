@@ -4,9 +4,9 @@ import { savedMoviesArray } from "../../utils/constants.js";
 
 export default function SavedMovies() {
   return (
-    <>
+    <main>
       <SearchForm/>
       <MoviesCardList moviesArray={savedMoviesArray} isListInSaved={true}/>
-    </>
+    </main>
   );
 };

@@ -7,13 +7,13 @@ import "./Main.css";
 
 export default function Main () {
   return (
-    <>
+    <main>
       <Promo/>
       <AboutProject/>
       <Techs/>
       <AboutMe/>
       <Portfolio/>
-    </>
+    </main>
   )
 }
 

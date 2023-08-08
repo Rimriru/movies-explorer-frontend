@@ -79,7 +79,7 @@ export default function Navigation({
             Регистрация
           </Link>
           <Link to="/signin" className="navigation__login">
-            <button className="navigation__login-button">Войти</button>
+            <button className="navigation__login-button" type="button">Войти</button>
           </Link>
         </nav>
       )}

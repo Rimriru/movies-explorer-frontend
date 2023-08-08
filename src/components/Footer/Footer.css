@@ -47,14 +47,11 @@
   line-height: normal;
   text-decoration: none;
   transition: opacity .3s ease-in;
+  color: var(--text-color);
 }
 
 .footer__link:hover {
   opacity: .7;
-}
-
-.footer__link:visited {
-  color: var(--text-color);
 }
 
 @media screen and (max-width: 900px) {

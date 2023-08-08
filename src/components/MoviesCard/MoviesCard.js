@@ -26,7 +26,7 @@ export default function MoviesCard({ title, link, duration, isInSaved }) {
       <img className="movie-card__image" src={link} alt={title}/>
       <div className="movie-card__container">
         <h2 className="movie-card__title">{title}</h2>
-        <button className={`movie-card__like-btn ${isMovieCardLiked ? "movie-card__like-btn_type_active" : ""} ${isInSaved ? "movie-card__like-btn_type_remove" : ""} ${isInSaved && isRemoveBtnVisible ? "movie-card__like-btn_visible" : ""}`} onClick={isInSaved ? handleRemoveBtnClick : handleLikeBtnClick}></button>
+        <button className={`movie-card__like-btn ${isMovieCardLiked ? "movie-card__like-btn_type_active" : ""} ${isInSaved ? "movie-card__like-btn_type_remove" : ""} ${isInSaved && isRemoveBtnVisible ? "movie-card__like-btn_visible" : ""}`} onClick={isInSaved ? handleRemoveBtnClick : handleLikeBtnClick} type="button"></button>
       </div>
       <p className="movie-card__duration">{duration}</p>
     </article>

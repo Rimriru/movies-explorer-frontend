@@ -5,7 +5,7 @@ export default function AboutMe() {
   return (
     <section className="about-me">
       <h2 className="heading">Студент</h2>
-      <article className="about-me__info-box">
+      <div className="about-me__info-box">
         <div className="about-me__info">
           <h3 className="about-me__title">Виталий</h3>
           <p className="about-me__subtitle">Фронтенд-разработчик, 30 лет</p>
@@ -31,7 +31,7 @@ export default function AboutMe() {
           src={photoPath}
           alt="Фото разработчика"
         />
-      </article>
+      </div>
     </section>
   );
 }

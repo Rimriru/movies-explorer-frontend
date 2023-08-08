@@ -12,21 +12,23 @@ export default function MoviesCardList({ moviesArray, isListInSaved }) {
   return (
     <section className="movies-cards">
       <Preloader isVisible={isPreloaderVisible} />
-      <div className="movies-cards__list">
+      <ul className="movies-cards__list">
         {moviesArray.slice(0, moviesToRender).map((movie, i) => {
           return (
-            <MoviesCard
-              key={i}
-              title={movie.title}
-              link={movie.link}
-              duration={movie.duration}
-              isInSaved={isListInSaved}
-            />
+            <li>
+              <MoviesCard
+                key={i}
+                title={movie.title}
+                link={movie.link}
+                duration={movie.duration}
+                isInSaved={isListInSaved}
+              />
+            </li>
           );
         })}
-      </div>
+      </ul>
       {moviesArray.length > moviesToRender && (
-        <button className="movies-cards__btn" onClick={handlerMoreBtnClick}>
+        <button className="movies-cards__btn" onClick={handlerMoreBtnClick} type="button">
           Ещё
         </button>
       )}

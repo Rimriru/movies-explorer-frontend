@@ -19,6 +19,12 @@
   height: 38px;
   flex-shrink: 0;  
   margin-left: 70px;
+  opacity: 1;
+  transition: .3s ease-in-out;
+}
+
+.logo:hover {
+  opacity: .7;
 }
 
 .header__burger-btn {
@@ -28,6 +34,11 @@
   position: relative;
   cursor: pointer;
   z-index: 100;
+  border: none;
+  padding: 0;
+  background: transparent;
+  opacity: 1;
+  transition: .3s ease-in-out;
 }
 
 .header__burger-btn::before {
@@ -50,9 +61,13 @@
   transition: transform ease-out .2s;
 }
 
+.header__burger-btn:hover {
+  opacity: .8;
+}
+
 .header__burger-btn_showed {
   display: block;
-  margin-right: 37px;
+  margin-right: 53px;
 }
 
 .header__burger-btn_clicked {

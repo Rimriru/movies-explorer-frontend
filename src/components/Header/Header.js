@@ -26,14 +26,14 @@ export default function Header({ isLoggedIn }) {
       </Link>
       <Navigation isLoggedIn={isLoggedIn} isMobile={isMobile} isNavigationOpened={isNavigationOpened} setIsNavigationOpened={setIsNavigationOpened}
       isMain={isMain}></Navigation>
-      <div
+      <button
         className={`header__burger-btn ${
           isMobile && isLoggedIn ? "header__burger-btn_showed" : ""
         } ${isNavigationOpened ? "header__burger-btn_clicked" : ""}`}
-        onClick={burgerClick}
+        onClick={burgerClick} type="button"
       >
         <span className="header__burger-center"></span>
-      </div>
+      </button>
     </header>
   );
 };

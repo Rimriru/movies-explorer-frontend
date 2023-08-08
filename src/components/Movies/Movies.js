@@ -5,9 +5,9 @@ import "./Movies.css";
 
 export default function Movies() {
   return (
-    <>
+    <main>
       <SearchForm/>
       <MoviesCardList moviesArray={moviesArray}/>
-    </>
+    </main>
   );
 };

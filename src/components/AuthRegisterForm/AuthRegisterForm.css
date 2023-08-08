@@ -17,6 +17,7 @@
   opacity: 1;
   transition: .3s ease-in-out;
   outline: none;
+  cursor: pointer;
 }
 
 .form__submit-btn:hover {
