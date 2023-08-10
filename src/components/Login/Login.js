@@ -4,10 +4,16 @@ import { useFormWithValidation }  from "../../utils/formValidation";
 import { Link } from "react-router-dom";
 import "./Login.css";
 
-export default function Login() {
+export default function Login({ onSubmit }) {
   const formValidation = useFormWithValidation();
   const emailError = formValidation.errors.email;
   const passwordError = formValidation.errors.password;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formValidation.values);
+  };
+
   return (
     <main>
       <section className="auth-content">
@@ -15,7 +21,7 @@ export default function Login() {
           <div className="logo logo_auth"></div>
         </Link>
         <h1 className="auth-content__heading">Рады видеть!</h1>
-        <AuthRegisterForm isValid={formValidation.isValid}>
+        <AuthRegisterForm isValid={formValidation.isValid} onSubmit={handleSubmit}>
           <label className="auth-content__label" htmlFor="email">
             E-mail
             <input

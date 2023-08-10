@@ -6,9 +6,7 @@ class MainApi {
 
   _checkResponse(res) {
     try {
-      if (res.ok) {
-        return res.json().then(data => data);
-      }
+      return res.json().then(data => data);
     } catch (error) {
       console.log(error);
       return Promise.reject(`Ошибка: ${res.status} ${error.message}`);
@@ -40,11 +38,65 @@ class MainApi {
       })
     }).then(res => this._checkResponse(res));
   }
+
+  async getUserInfo() {
+    return await fetch(`${this.baseUrl}/users/me`, {
+      method: "GET",
+      headers: this.headers,
+    }).then(res => this._checkResponse(res));
+  }
+
+  async updateUserInfo({ email, password }) {
+    return await fetch(`${this.baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        "email": email,
+        "password": password,
+      }),
+    }).then(res => this._checkResponse(res));
+  }
+
+  async getUserMovies() {
+    return await fetch(`${this.baseUrl}/movies`, {
+      method: "GET",
+      headers: this.headers,
+    }).then(res => this._checkResponse(res));
+  }
+
+  async addUserMovie({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId }) {
+    return await fetch(`${this.baseUrl}/movies`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify({
+        "country": country,
+        "director": director,
+        "duration": duration,
+        "year": year,
+        "description": description,
+        "image": image,
+        "trailer": trailer,
+        "nameRU": nameRU,
+        "nameEN": nameEN,
+        "thumbnail": thumbnail,
+        "movieId": movieId,
+      }),
+    }).then(res => this._checkResponse(res));
+  }
+
+  async removeUserMovie(movieId) {
+    return await fetch(`${this.baseUrl}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    }).then(res => this._checkResponse(res));
+  }
 }
 
-export const mainApi = new MainApi({
+const mainApi = new MainApi({
   baseUrl: 'https://movies.explorer.api.nomoredomains.xyz',
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+export default mainApi;

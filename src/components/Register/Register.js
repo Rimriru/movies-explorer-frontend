@@ -14,7 +14,7 @@ export default function Register({ onSubmit }) {
     e.preventDefault();
     onSubmit(formValidation.values);
   };
-  // передаем в запрос formValidation.values.name, formValidation.values.email & pass
+  
   return (
     <main>
       <section className="auth-content">

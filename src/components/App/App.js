@@ -11,7 +11,7 @@ import Footer from "../Footer/Footer.js";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { headerRoutes, footerRoutes } from "../../utils/constants.js";
-import { mainApi } from '../../utils/mainApi';
+import mainApi from '../../utils/mainApi.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -25,7 +25,16 @@ function App() {
   const handleRegisterFormSubmit = ({ email, name, password }) => {
     mainApi.register({ email, name, password })
       .then(() => navigate('/signin'))
-      .catch(err => err);
+      .catch(console.error);
+  };
+
+  const handleLoginFormSubmit = ({ email, password }) => {
+    mainApi.login({ email, password })
+      .then(() => {
+        setIsLoggedIn(true);
+        navigate('/');
+      })
+      .catch(console.error);
   };
 
   return (
@@ -37,7 +46,7 @@ function App() {
         <Route path='/saved-movies' element={<SavedMovies />}/>
         <Route path='/profile' element={<Profile onSignOut={handleSignOutBtnClick} />}/>
         <Route path='/signup' element={<Register onSubmit={handleRegisterFormSubmit} />}/>
-        <Route path='/signin' element={<Login />}/>
+        <Route path='/signin' element={<Login onSubmit={handleLoginFormSubmit} />}/>
         <Route path='/*' element={<NotFound />}/>
       </Routes>
       {footerRoutes.find(route => currentLocation.pathname === route) && <Footer />}
