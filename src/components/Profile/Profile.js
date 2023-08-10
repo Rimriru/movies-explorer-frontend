@@ -1,12 +1,14 @@
 import { useState } from "react";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
+import { useForm } from "../../utils/formValidation";
 import "./Profile.css";
 
 export default function Profile({ onSignOut }) {
+  const formManagement = useForm();
+  const nameInputValue = formManagement.values.name;
   // будет подтягиваться юзер с сервера на следующем этапе, но пока так
   // все обработчики будут в app
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [userName, setUserName] = useState("");
 
   const handleEditProfileBtnClick = () => {
     setIsInputDisabled(false);
@@ -17,40 +19,39 @@ export default function Profile({ onSignOut }) {
     setIsInputDisabled(true);
   };
 
-  const handleNameInputChange = (e) => {
-    setUserName(e.target.value);
-  };
-
   return (
     <main>
       <section className="profile">
         <h1 className="profile__heading">{`Привет, ${
-          userName !== "" ? userName : ""
+          nameInputValue !== undefined ? nameInputValue : ""
         }!`}</h1>
         <form
           className="profile__form"
           method="POST"
           onSubmit={handleProfileFormSubmit}
+          noValidate
         >
           <label className="profile__label">
             Имя
             <input
               className="profile__input"
+              name="name"
               required
               minLength={2}
               maxLength={30}
               disabled={isInputDisabled}
-              value={userName}
-              onChange={handleNameInputChange}
+              onChange={formManagement.handleChange}
             />
           </label>
           <label className="profile__label">
             E-mail
             <input
               className="profile__input"
+              name="email"
               required
               type="email"
               disabled={isInputDisabled}
+              onChange={formManagement.handleChange}
             />
           </label>
           {isInputDisabled ? (

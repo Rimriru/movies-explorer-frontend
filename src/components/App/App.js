@@ -11,6 +11,7 @@ import Footer from "../Footer/Footer.js";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { headerRoutes, footerRoutes } from "../../utils/constants.js";
+import { mainApi } from '../../utils/mainApi';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -21,6 +22,12 @@ function App() {
     navigate('/');
   };
 
+  const handleRegisterFormSubmit = ({ email, name, password }) => {
+    mainApi.register({ email, name, password })
+      .then(() => navigate('/signin'))
+      .catch(err => err);
+  };
+
   return (
     <>
       {headerRoutes.find(route => currentLocation.pathname === route) && <Header isLoggedIn={isLoggedIn}/>}
@@ -29,7 +36,7 @@ function App() {
         <Route path='/movies' element={<Movies />}/>
         <Route path='/saved-movies' element={<SavedMovies />}/>
         <Route path='/profile' element={<Profile onSignOut={handleSignOutBtnClick} />}/>
-        <Route path='/signup' element={<Register />}/>
+        <Route path='/signup' element={<Register onSubmit={handleRegisterFormSubmit} />}/>
         <Route path='/signin' element={<Login />}/>
         <Route path='/*' element={<NotFound />}/>
       </Routes>

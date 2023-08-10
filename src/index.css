@@ -9,6 +9,8 @@
   --line-color: #424242;
   --links-and-buttons-color: #4285F4;
   --error-color: #EE3465;
+  --disabled-btn-text: #C2C2C2;
+  --disabled-btn-background: #6688c0;
 }
 
 .page {

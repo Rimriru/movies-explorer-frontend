@@ -24,6 +24,11 @@
   opacity: .8;
 }
 
+.form__submit-btn:disabled {
+  color: var(--disabled-btn-text);
+  background-color: var(--disabled-btn-background);
+}
+
 .form__text {
   margin: 0;
   font-size: 14px;

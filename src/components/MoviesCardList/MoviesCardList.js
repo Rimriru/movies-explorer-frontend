@@ -15,9 +15,8 @@ export default function MoviesCardList({ moviesArray, isListInSaved }) {
       <ul className="movies-cards__list">
         {moviesArray.slice(0, moviesToRender).map((movie, i) => {
           return (
-            <li>
+            <li key={i}>
               <MoviesCard
-                key={i}
                 title={movie.title}
                 link={movie.link}
                 duration={movie.duration}

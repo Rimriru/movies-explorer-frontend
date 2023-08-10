@@ -1,6 +1,17 @@
 import "./FilterCheckbox.css";
 
 export default function FilterCheckbox() {
+
+
+  // handleInputChange(event) {
+  //   const target = event.target;
+  //   const value = target.type === 'checkbox' ? target.checked : target.value;
+  //   const name = target.name;
+
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // }
   return (
     <div className="filter-checkbox">
       <label className="filter-checkbox__switch">

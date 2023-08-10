@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import "./AuthRegisterForm.css";
 
-export default function AuthLoginForm({ children, isRegister }) {
+export default function AuthLoginForm({ children, isRegister, isValid, onSubmit }) {
   return (
-    <form className="form" method="POST">
+    <form className="form" method="POST" onSubmit={onSubmit}>
         {children}
-        <button className="form__submit-btn" type="submit">
+        <button className="form__submit-btn" type="submit" disabled={!isValid}>
           {isRegister ? "Зарегистрироваться" : "Войти"}
         </button>
         <p className="form__text">
