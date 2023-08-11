@@ -1,13 +1,22 @@
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
-import { moviesArray } from "../../utils/constants";
+import Preloader from "../Preloader/Preloader";
 import "./Movies.css";
 
-export default function Movies() {
+export default function Movies({ isPreloaderVisible, moviesArray, isApiErrorShown, isNotFoundErrorShown, onSubmit }) {
   return (
-    <main>
-      <SearchForm/>
-      <MoviesCardList moviesArray={moviesArray}/>
+    <main className="movies">
+      <SearchForm onSubmit={onSubmit} />
+      <MoviesCardList moviesArray={moviesArray} />
+      <Preloader isVisible={isPreloaderVisible} />
+      <span className={`movies__error ${isApiErrorShown ? "movies__error_visible" : ""}`}>Во время запроса произошла ошибка.
+      Возможно, проблема с соединением или сервер недоступен. 
+      Подождите немного и попробуйте ещё раз.
+      </span>
+      {/* <span className={`movies__error ${isApiErrorShown ? "movies__error_visible" : ""}`}>Во время запроса произошла ошибка.
+      Возможно, проблема с соединением или сервер недоступен. 
+      Подождите немного и попробуйте ещё раз. // NotFound Error :C
+      </span> */}
     </main>
   );
 };

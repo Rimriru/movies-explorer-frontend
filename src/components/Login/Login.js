@@ -41,8 +41,8 @@ export default function Login({ onSubmit }) {
               className="auth-content__input"
               name="password"
               type="password"
-              minLength={5}
-              maxLength={30}
+              minLength={8}
+              maxLength={20}
               required
               placeholder="А здесь Ваш пароль"
               onChange={formValidation.handleChange}

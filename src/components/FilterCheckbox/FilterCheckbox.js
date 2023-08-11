@@ -1,17 +1,6 @@
 import "./FilterCheckbox.css";
 
-export default function FilterCheckbox() {
-
-
-  // handleInputChange(event) {
-  //   const target = event.target;
-  //   const value = target.type === 'checkbox' ? target.checked : target.value;
-  //   const name = target.name;
-
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // }
+export default function FilterCheckbox({ onClick, isChecked }) {
   return (
     <div className="filter-checkbox">
       <label className="filter-checkbox__switch">
@@ -19,8 +8,9 @@ export default function FilterCheckbox() {
           className="filter-checkbox__input"
           type="checkbox"
           id="short-film"
-          defaultChecked
-        ></input>
+          onClick={onClick}
+          defaultChecked={isChecked}
+        />
         <span className="filter-checkbox__slider"></span>
       </label>
       <label className="filter-checkbox__label" htmlFor="short-film">

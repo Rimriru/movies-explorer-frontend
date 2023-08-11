@@ -1,7 +1,7 @@
 class MoviesApi {
   constructor({ baseUrl, headers }) {
-    this.baseUrl = baseUrl;
-    this.headers = headers;
+    this._baseUrl = baseUrl;
+    this._headers = headers;
   }
 
   _checkResponse(res) {
@@ -14,8 +14,7 @@ class MoviesApi {
   }
 
   async getMovies() {
-    return await fetch(this.baseUrl, {
-      method: "GET",
+    return await fetch(this._baseUrl, {
       headers: this.headers
     }).then(res => this._checkResponse(res));
   }

@@ -1,7 +1,7 @@
 class MainApi {
   constructor({ baseUrl, headers }) {
-    this.baseUrl = baseUrl;
-    this.headers = headers;
+    this._baseUrl = baseUrl;
+    this._headers = headers;
   }
 
   _checkResponse(res) {
@@ -15,9 +15,9 @@ class MainApi {
 
 
   async register({ email, name, password }) {
-    return await fetch(`${this.baseUrl}/signup`, {
+    return await fetch(`${this._baseUrl}/signup`, {
       method: "POST",
-      headers: this.headers,
+      headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         "email":  email,
@@ -28,9 +28,9 @@ class MainApi {
   }
 
   async login({ email, password }) {
-    return await fetch(`${this.baseUrl}/signin`, {
+    return await fetch(`${this._baseUrl}/signin`, {
       method: "POST",
-      headers: this.headers,
+      headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         "email":  email,
@@ -39,17 +39,22 @@ class MainApi {
     }).then(res => this._checkResponse(res));
   }
 
+  async logout() {
+    return await fetch(`${this._baseUrl}/signout`, {
+      headers: this._headers,
+    }).then(res => this._checkResponse(res));
+  }
+
   async getUserInfo() {
-    return await fetch(`${this.baseUrl}/users/me`, {
-      method: "GET",
-      headers: this.headers,
+    return await fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers,
     }).then(res => this._checkResponse(res));
   }
 
   async updateUserInfo({ email, password }) {
     return await fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this._headers,
       body: JSON.stringify({
         "email": email,
         "password": password,
@@ -58,16 +63,16 @@ class MainApi {
   }
 
   async getUserMovies() {
-    return await fetch(`${this.baseUrl}/movies`, {
+    return await fetch(`${this._baseUrl}/movies`, {
       method: "GET",
-      headers: this.headers,
+      headers: this._headers,
     }).then(res => this._checkResponse(res));
   }
 
   async addUserMovie({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId }) {
-    return await fetch(`${this.baseUrl}/movies`, {
+    return await fetch(`${this._baseUrl}/movies`, {
       method: "POST",
-      headers: this.headers,
+      headers: this._headers,
       body: JSON.stringify({
         "country": country,
         "director": director,
@@ -85,9 +90,9 @@ class MainApi {
   }
 
   async removeUserMovie(movieId) {
-    return await fetch(`${this.baseUrl}/movies/${movieId}`, {
+    return await fetch(`${this._baseUrl}/movies/${movieId}`, {
       method: "DELETE",
-      headers: this.headers,
+      headers: this._headers,
     }).then(res => this._checkResponse(res));
   }
 }

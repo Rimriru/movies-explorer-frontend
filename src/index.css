@@ -26,10 +26,10 @@
   -ms-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   color: var(--text-color);
-  height: 100dvh;
 }
 
 #root {
   display: flex;
   flex-direction: column;
+  height: 100dvh;
 }

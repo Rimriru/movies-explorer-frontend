@@ -1,0 +1,38 @@
+.movies {
+  display: block;
+  flex: 1;
+}
+
+.movies__error {
+  display: none;
+  margin: 80px auto;
+  max-width: 800px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--error-color);
+  text-align: center;
+}
+
+.movies__error_visible {
+  display: block;
+}
+
+@media screen and (max-width: 900px) {
+  .movies__error {
+    max-width: 600px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .movies__error {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .movies__error {
+    max-width: 300px;
+  }
+}

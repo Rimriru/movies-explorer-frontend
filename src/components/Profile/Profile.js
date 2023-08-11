@@ -3,7 +3,7 @@ import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useForm } from "../../utils/formValidation";
 import "./Profile.css";
 
-export default function Profile({ onSignOut }) {
+export default function Profile({ onSignOut, error }) {
   const formManagement = useForm();
   const nameInputValue = formManagement.values.name;
   // будет подтягиваться юзер с сервера на следующем этапе, но пока так
@@ -17,6 +17,11 @@ export default function Profile({ onSignOut }) {
   const handleProfileFormSubmit = (e) => {
     e.preventDefault();
     setIsInputDisabled(true);
+  };
+
+  const handleSignOut = () => {
+    onSignOut();
+    console.log(error);
   };
 
   return (
@@ -66,7 +71,7 @@ export default function Profile({ onSignOut }) {
               <button
                 className="profile__btn"
                 type="button"
-                onClick={onSignOut}
+                onClick={handleSignOut}
               >
                 Выйти из аккаунта
               </button>
