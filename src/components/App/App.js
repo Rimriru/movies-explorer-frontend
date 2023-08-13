@@ -11,6 +11,7 @@ import Footer from "../Footer/Footer.js";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { headerRoutes, footerRoutes } from "../../utils/constants.js";
+import useWindowResize from "../../utils/windowResize";
 import mainApi from "../../utils/mainApi.js";
 import moviesApi from "../../utils/moviesApi.js";
 import ProtectedRouteElement from "../ProtectedRoute.js";
@@ -19,32 +20,54 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [error, setError] = useState("");
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
-  const [moviesArray, setMoviesArray] = useState([]);
+  const [filteredMoviesArray, setFilteredMoviesArray] = useState([]);
   const [isApiErrorShown, setIsApiErrorShown] = useState(false);
   const [isNotFoundErrorShown, setIsNotFoundErrorShown] = useState(false);
+  const [moviesToRender, setMoviesToRender] = useState(16);
   const currentLocation = useLocation();
   const navigate = useNavigate();
 
-  const filterMovieOnDuration = (duration) => {
-    const isShortFilm = localStorage.getItem('isCheckboxChecked');
-    return isShortFilm ? duration <= 40 : duration > 40;
-  };
-
-  const filterMovieArray = (arr) => {
-    return arr.filter(movie => movie.nameRU.includes(localStorage.getItem('title')) && filterMovieOnDuration(movie.duration));
-  };
+  const { isDesktop, isTab, isMobile } = useWindowResize();
 
   useEffect(() => {
-    if(moviesArray.length === 0) {
-      setIsNotFoundErrorShown(true);
+    if (isDesktop) {
+      setMoviesToRender(16);
+    } else if (isTab) {
+      setMoviesToRender(8);
+    } else if (isMobile) {
+      setMoviesToRender(5);
     }
-  }, [moviesArray]);
+  }, [isDesktop, isTab, isMobile]);
+
+  const filterMovieOnDuration = (isCheckboxChecked, duration) => {
+    return isCheckboxChecked ? duration <= 40 : duration > 40;
+  };
+
+  const filterMovieArray = (arr, isCheckboxChecked) => {
+    const searchMovieTitleLowered = localStorage.getItem("title").toLowerCase();
+    const isTitleLatin = /[a-z]/.test(searchMovieTitleLowered);
+    const filteredMovieArray = arr.filter(
+      (movie) =>
+        (isTitleLatin ? movie.nameEN : movie.nameRU)
+          .toLowerCase()
+          .includes(searchMovieTitleLowered) &&
+        filterMovieOnDuration(isCheckboxChecked, movie.duration)
+    );
+    if (filteredMovieArray.length === 0) {
+      setIsPreloaderVisible(false);
+      setIsNotFoundErrorShown(true);
+      return filteredMovieArray;
+    } else {
+      return filteredMovieArray;
+    }
+  };
 
   const handleSignOutBtnClick = () => {
     mainApi
       .logout()
       .then(() => {
         setIsLoggedIn(false);
+        localStorage.clear();
         navigate("/");
       })
       .catch((err) => setError(err.message));
@@ -67,16 +90,23 @@ function App() {
       .catch(console.error);
   };
 
-  const handleSearchFormSubmit = () => {
+  const handleMoreBtnClick = () =>
+    isDesktop
+      ? setMoviesToRender(moviesToRender + 4)
+      : setMoviesToRender(moviesToRender + 2);
+
+  const handleSearchFormSubmit = (isCheckboxChecked) => {
+    setIsNotFoundErrorShown(false);
     setIsPreloaderVisible(true);
+    setFilteredMoviesArray([]);
     moviesApi
       .getMovies()
-      .then(res => {
-        // setMoviesArray(res);
-        console.log(res);
-        const filteredArray = filterMovieArray(res);
-        setMoviesArray(filteredArray);
-        console.log(moviesArray);
+      .then((res) => {
+        // console.log(res);
+        const filteredArray = filterMovieArray(res, isCheckboxChecked);
+        setFilteredMoviesArray(filteredArray);
+        localStorage.setItem("filteredMoviesArray", filteredArray);
+        setIsPreloaderVisible(false);
       })
       .catch(() => {
         setIsPreloaderVisible(false);
@@ -98,10 +128,12 @@ function App() {
               loggedIn={isLoggedIn}
               element={Movies}
               isPreloaderVisible={isPreloaderVisible}
-              moviesArray={moviesArray}
+              moviesArray={filteredMoviesArray}
               isApiErrorShown={isApiErrorShown}
               isNotFoundErrorShown={isNotFoundErrorShown}
+              moviesToRender={moviesToRender}
               onSubmit={handleSearchFormSubmit}
+              onClick={handleMoreBtnClick}
             />
           }
         />
@@ -111,6 +143,7 @@ function App() {
             <ProtectedRouteElement
               loggedIn={isLoggedIn}
               element={SavedMovies}
+              moviesToRender={moviesToRender}
             />
           }
         />

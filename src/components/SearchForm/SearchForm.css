@@ -108,7 +108,6 @@
 }
 
 @media screen and (max-width: 600px) {
-
   .search__form {
     flex-wrap: wrap;
     padding-right: 0;
@@ -119,8 +118,11 @@
     display: none;
   }
 
-  .search__input {
+  .search__container {
     width: calc(100% - 19px * 2 - 60px);
+  }
+
+  .search__input {
     font-size: 14px;
     line-height: 1.42;
   }

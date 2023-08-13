@@ -8,7 +8,7 @@ export default function Navigation({
   setIsNavigationOpened,
   isMain,
 }) {
-  const isMobile = useIsMobile();
+  const isTabOrMobile = useIsMobile().isTabOrMobile;
   const currentLocation = useLocation();
   const isMovies = currentLocation.pathname === "/movies";
   const isSavedMovies = currentLocation.pathname === "/saved-movies";
@@ -22,16 +22,16 @@ export default function Navigation({
       {isLoggedIn ? (
         <nav
           className={`navigation ${isLoggedIn ? "navigation_logged" : ""} ${
-            isMobile ? "navigation_mobile" : ""
+            isTabOrMobile ? "navigation_mobile" : ""
           } ${isNavigationOpened ? "navigation_opened" : ""}`}
         >
           <ul className="navigation__links">
-            {isMobile && (
+            {isTabOrMobile && (
               <li>
                 <Link
                   to="/"
                   className={`navigation__link ${
-                    isMain && isMobile ? "navigation__link_current-mobile" : ""
+                    isMain && isTabOrMobile ? "navigation__link_current-mobile" : ""
                   }`}
                   onClick={handleLinkClick}
                 >
@@ -43,7 +43,7 @@ export default function Navigation({
               <Link
                 to="/movies"
                 className={`navigation__link ${
-                  isMovies && isMobile ? "navigation__link_current-mobile" : ""
+                  isMovies && isTabOrMobile ? "navigation__link_current-mobile" : ""
                 } ${isMovies ? "navigation__link_current-desktop" : ""}`}
                 onClick={handleLinkClick}
               >
@@ -54,7 +54,7 @@ export default function Navigation({
               <Link
                 to="/saved-movies"
                 className={`navigation__link ${
-                  isSavedMovies && isMobile
+                  isSavedMovies && isTabOrMobile
                     ? "navigation__link_current-mobile"
                     : ""
                 } ${isSavedMovies ? "navigation__link_current-desktop" : ""}`}

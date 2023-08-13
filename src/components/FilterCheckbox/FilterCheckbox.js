@@ -1,6 +1,6 @@
 import "./FilterCheckbox.css";
 
-export default function FilterCheckbox({ onClick, isChecked }) {
+export default function FilterCheckbox({ onChange, isChecked, wasChecked }) {
   return (
     <div className="filter-checkbox">
       <label className="filter-checkbox__switch">
@@ -8,8 +8,8 @@ export default function FilterCheckbox({ onClick, isChecked }) {
           className="filter-checkbox__input"
           type="checkbox"
           id="short-film"
-          onClick={onClick}
-          defaultChecked={isChecked}
+          onChange={onChange}
+          checked={isChecked}
         />
         <span className="filter-checkbox__slider"></span>
       </label>

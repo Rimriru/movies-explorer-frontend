@@ -7,7 +7,7 @@ import { useLocation, Link } from "react-router-dom";
 export default function Header({ isLoggedIn }) {
   const currentLocation = useLocation();
   const isMain = currentLocation.pathname === "/";
-  const isMobile = useIsMobile();
+  const isTabOrMobile = useIsMobile().isTabOrMobile;
 
   const [isNavigationOpened, setIsNavigationOpened] = useState(false);
 
@@ -24,11 +24,11 @@ export default function Header({ isLoggedIn }) {
       <Link to="/">
         <div className="logo"></div>
       </Link>
-      <Navigation isLoggedIn={isLoggedIn} isMobile={isMobile} isNavigationOpened={isNavigationOpened} setIsNavigationOpened={setIsNavigationOpened}
+      <Navigation isLoggedIn={isLoggedIn} isMobile={isTabOrMobile} isNavigationOpened={isNavigationOpened} setIsNavigationOpened={setIsNavigationOpened}
       isMain={isMain}></Navigation>
       <button
         className={`header__burger-btn ${
-          isMobile && isLoggedIn ? "header__burger-btn_showed" : ""
+          isTabOrMobile && isLoggedIn ? "header__burger-btn_showed" : ""
         } ${isNavigationOpened ? "header__burger-btn_clicked" : ""}`}
         onClick={burgerClick} type="button"
       >

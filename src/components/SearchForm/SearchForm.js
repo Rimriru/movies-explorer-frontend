@@ -1,22 +1,25 @@
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useFormWithValidation }  from "../../utils/formValidation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./SearchForm.css";
 
-export default function SearchForm({ onSubmit }) {
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(true);
+export default function SearchForm({ onSubmit, previousSearchValue, wasChecked }) {
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(wasChecked !== undefined ? wasChecked : true);
   const formValidation = useFormWithValidation();
   const searchInputError = formValidation.errors.title;
+
+  useEffect(() => {
+    localStorage.setItem("isCheckboxChecked", isCheckboxChecked);
+  }, [isCheckboxChecked]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("title", formValidation.values.title);
-    localStorage.setItem("isCheckboxChecked", isCheckboxChecked);
-    onSubmit();
+    onSubmit(isCheckboxChecked);
   };
 
-  const handleCheckboxClick = () => {
-    setIsCheckboxChecked(!isCheckboxChecked);
+  const handleCheckboxChange = (e) => {
+    setIsCheckboxChecked(e.target.checked);
   };
 
   return (
@@ -24,13 +27,13 @@ export default function SearchForm({ onSubmit }) {
       <form className="search__form" noValidate onSubmit={handleSubmit}>
         <div className="search__loupe"></div>
         <div className="search__container">
-          <input className="search__input" placeholder="Фильм" name="title" required onChange={formValidation.handleChange}/>
+          <input className="search__input" placeholder="Фильм" name="title" required onChange={formValidation.handleChange} value={previousSearchValue ? previousSearchValue : ""} />
           <span className={`search__error ${searchInputError ? "search__error_visible" : ""}`}>{`${searchInputError ? "Нужно ввести ключевое слово" : ""}`}</span>
         </div>
         <button className="search__submit-btn" type="submit" disabled={!formValidation.isValid}>
           Найти
         </button>
-        <FilterCheckbox onClick={handleCheckboxClick} isChecked={isCheckboxChecked} />
+        <FilterCheckbox onChange={handleCheckboxChange} isChecked={isCheckboxChecked} wasChecked={wasChecked} />
       </form>
     </section>
   );
