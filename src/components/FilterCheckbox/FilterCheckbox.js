@@ -1,6 +1,6 @@
 import "./FilterCheckbox.css";
 
-export default function FilterCheckbox({ onChange, isChecked, wasChecked }) {
+export default function FilterCheckbox({ onChange, isChecked }) {
   return (
     <div className="filter-checkbox">
       <label className="filter-checkbox__switch">

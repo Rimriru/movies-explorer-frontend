@@ -46,19 +46,21 @@ function App() {
   const filterMovieArray = (arr, isCheckboxChecked) => {
     const searchMovieTitleLowered = localStorage.getItem("title").toLowerCase();
     const isTitleLatin = /[a-z]/.test(searchMovieTitleLowered);
-    const filteredMovieArray = arr.filter(
-      (movie) =>
-        (isTitleLatin ? movie.nameEN : movie.nameRU)
-          .toLowerCase()
-          .includes(searchMovieTitleLowered) &&
-        filterMovieOnDuration(isCheckboxChecked, movie.duration)
-    );
-    if (filteredMovieArray.length === 0) {
-      setIsPreloaderVisible(false);
-      setIsNotFoundErrorShown(true);
-      return filteredMovieArray;
-    } else {
-      return filteredMovieArray;
+    if (arr) {
+      const filteredMovieArray = arr.filter(
+        (movie) =>
+          (isTitleLatin ? movie.nameEN : movie.nameRU)
+            .toLowerCase()
+            .includes(searchMovieTitleLowered) &&
+          filterMovieOnDuration(isCheckboxChecked, movie.duration)
+      );
+      if (filteredMovieArray.length === 0) {
+        setIsPreloaderVisible(false);
+        setIsNotFoundErrorShown(true);
+        return filteredMovieArray;
+      } else {
+        return filteredMovieArray;
+      }
     }
   };
 
@@ -99,13 +101,14 @@ function App() {
     setIsNotFoundErrorShown(false);
     setIsPreloaderVisible(true);
     setFilteredMoviesArray([]);
+    localStorage.setItem("filteredMoviesArray", null);
     moviesApi
       .getMovies()
       .then((res) => {
         // console.log(res);
         const filteredArray = filterMovieArray(res, isCheckboxChecked);
         setFilteredMoviesArray(filteredArray);
-        localStorage.setItem("filteredMoviesArray", filteredArray);
+        localStorage.setItem("filteredMoviesArray", JSON.stringify(filteredArray));
         setIsPreloaderVisible(false);
       })
       .catch(() => {
