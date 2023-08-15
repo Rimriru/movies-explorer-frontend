@@ -21,7 +21,6 @@ export default function Profile({ onSignOut, error }) {
 
   const handleSignOut = () => {
     onSignOut();
-    console.log(error);
   };
 
   return (
@@ -78,7 +77,7 @@ export default function Profile({ onSignOut, error }) {
             </div>
           ) : (
             <>
-              <ApiErrorMessage placement="profile" />
+              <ApiErrorMessage placement="profile" errorText={error} />
               <button className="profile__submit-btn" type="submit">
                 Сохранить
               </button>

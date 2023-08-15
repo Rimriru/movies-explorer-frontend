@@ -15,9 +15,11 @@ import useWindowResize from "../../utils/windowResize";
 import mainApi from "../../utils/mainApi.js";
 import moviesApi from "../../utils/moviesApi.js";
 import ProtectedRouteElement from "../ProtectedRoute.js";
+import showMovieArray from "../../utils/movieFilter.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState("");
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
   const [filteredMoviesArray, setFilteredMoviesArray] = useState([]);
@@ -30,6 +32,23 @@ function App() {
   const { isDesktop, isTab, isMobile } = useWindowResize();
 
   useEffect(() => {
+    checkToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const checkToken = () => {
+    const token = document.cookie.jwt;
+    console.log(document.cookie);
+    if(token) {
+      setIsLoggedIn(true);
+      navigate('/movies');
+      mainApi.getUserInfo().then(res => {
+        setCurrentUser(res);
+      }).catch(console.error);
+    }
+  };
+
+  useEffect(() => {
     if (isDesktop) {
       setMoviesToRender(16);
     } else if (isTab) {
@@ -39,30 +58,6 @@ function App() {
     }
   }, [isDesktop, isTab, isMobile]);
 
-  const filterMovieOnDuration = (isCheckboxChecked, duration) => {
-    return isCheckboxChecked ? duration <= 40 : duration > 40;
-  };
-
-  const filterMovieArray = (arr, isCheckboxChecked) => {
-    const searchMovieTitleLowered = localStorage.getItem("title").toLowerCase();
-    const isTitleLatin = /[a-z]/.test(searchMovieTitleLowered);
-    if (arr) {
-      const filteredMovieArray = arr.filter(
-        (movie) =>
-          (isTitleLatin ? movie.nameEN : movie.nameRU)
-            .toLowerCase()
-            .includes(searchMovieTitleLowered) &&
-          filterMovieOnDuration(isCheckboxChecked, movie.duration)
-      );
-      if (filteredMovieArray.length === 0) {
-        setIsPreloaderVisible(false);
-        setIsNotFoundErrorShown(true);
-        return filteredMovieArray;
-      } else {
-        return filteredMovieArray;
-      }
-    }
-  };
 
   const handleSignOutBtnClick = () => {
     mainApi
@@ -79,7 +74,7 @@ function App() {
     mainApi
       .register({ email, name, password })
       .then(() => navigate("/signin"))
-      .catch(console.error);
+      .catch((err) => setError(err.message));
   };
 
   const handleLoginFormSubmit = ({ email, password }) => {
@@ -87,9 +82,9 @@ function App() {
       .login({ email, password })
       .then(() => {
         setIsLoggedIn(true);
-        navigate("/");
+        navigate("/movies");
       })
-      .catch(console.error);
+      .catch((err) => setError(err.message));
   };
 
   const handleMoreBtnClick = () =>
@@ -105,16 +100,23 @@ function App() {
     moviesApi
       .getMovies()
       .then((res) => {
-        // console.log(res);
-        const filteredArray = filterMovieArray(res, isCheckboxChecked);
+        console.log(res);
+        const filteredArray = showMovieArray(res, isCheckboxChecked);
+        if (filteredArray.length === 0) {
+          setIsNotFoundErrorShown(true);
+        }
+        setIsPreloaderVisible(false);
         setFilteredMoviesArray(filteredArray);
         localStorage.setItem("filteredMoviesArray", JSON.stringify(filteredArray));
-        setIsPreloaderVisible(false);
       })
       .catch(() => {
         setIsPreloaderVisible(false);
         setIsApiErrorShown(true);
       });
+  };
+
+  const handleLikeBtnClick = (movieData) => {
+    mainApi.addUserMovie(movieData).then().catch((err) => setError(err.message));
   };
 
   return (
@@ -137,6 +139,7 @@ function App() {
               moviesToRender={moviesToRender}
               onSubmit={handleSearchFormSubmit}
               onClick={handleMoreBtnClick}
+              onLike={handleLikeBtnClick}
             />
           }
         />

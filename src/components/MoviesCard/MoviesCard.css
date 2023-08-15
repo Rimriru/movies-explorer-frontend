@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.movie-card__trailer-link {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
 .movie-card__image {
   width: 100%;
   margin-bottom: 14px;

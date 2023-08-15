@@ -1,24 +1,27 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
-export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick }) {
-  const countDuration = (durationInMins) => {
-    const hours = Math.floor(durationInMins / 60);
-    const minutes = durationInMins % 60;
-    return { hours, minutes }
-  };
-
+export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike }) {
   return (
     <section className={`movies-cards ${moviesArray.length !== 0 ? "movies-cards_visible" : ""}`}>
       <ul className="movies-cards__list">
-        {moviesArray.slice(0, moviesToRender).map((movie) => {
+        {moviesArray && moviesArray.slice(0, moviesToRender).map((movie, i) => {
           return (
-            <li key={movie.id}>
+            <li key={i}>
               <MoviesCard
-                title={movie.nameRU}
-                link={`https://api.nomoreparties.co/${movie.image.url}`}
-                duration={`${countDuration(movie.duration).hours}ч ${countDuration(movie.duration).minutes}м`}
+                nameRU={movie.nameRU}
+                nameEN={movie.nameEN}
+                trailerLink={movie.trailerLink}
+                image={isListInSaved ? movie.image : `https://api.nomoreparties.co/${movie.image.url}`}
+                duration={movie.duration}
+                country={movie.country}
+                director={movie.director}
+                year={movie.year}
+                description={movie.description}
+                thumbnail={isListInSaved ? movie.thumbnail : `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}
+                movieId={movie.id}
                 isInSaved={isListInSaved}
+                onLike={onLike}
               />
             </li>
           );

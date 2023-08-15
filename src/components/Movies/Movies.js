@@ -7,6 +7,7 @@ import {
   notFoundErrorMessage,
 } from "../../utils/constants.js";
 import "./Movies.css";
+import showMovieArray from "../../utils/movieFilter.js";
 
 export default function Movies({
   isPreloaderVisible,
@@ -15,6 +16,7 @@ export default function Movies({
   isNotFoundErrorShown,
   onSubmit,
   onClick,
+  onLike,
   moviesToRender,
 }) {
   const [previousSearch, setPreviousSearch] = useState({
@@ -46,10 +48,17 @@ export default function Movies({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moviesArray]);
 
+  const handleCheckboxChange = (isChecked) => {
+    const previousArray = previousSearch.moviesArray;
+    const newMovieArray = showMovieArray(previousArray, isChecked);
+    setPreviousSearch({ moviesArray: newMovieArray });
+  };
+
   return (
     <main className="movies">
       <SearchForm
         onSubmit={onSubmit}
+        onChange={handleCheckboxChange}
         previousSearchValue={previousSearch.title}
       />
       {previousSearch.moviesArray && (
@@ -58,6 +67,7 @@ export default function Movies({
           isListInSaved={false}
           moviesToRender={moviesToRender}
           onClick={onClick}
+          onLike={onLike}
         />
       )}
       {isPreloaderVisible ? (
@@ -66,8 +76,8 @@ export default function Movies({
         <span
           className={`movies__error ${
             isApiErrorShown ||
-            isNotFoundErrorShown ||
-            previousSearch.moviesArray.length === 0
+            isNotFoundErrorShown
+            // previousSearch.moviesArray.length === 0
               ? "movies__error_visible"
               : ""
           }`}

@@ -3,7 +3,7 @@ import { useFormWithValidation } from "../../utils/formValidation";
 import { useState, useEffect } from "react";
 import "./SearchForm.css";
 
-export default function SearchForm({ onSubmit, previousSearchValue }) {
+export default function SearchForm({ onSubmit, onChange, previousSearchValue }) {
   const wasCheckboxChecked = localStorage.getItem("isCheckboxChecked");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(wasCheckboxChecked !== null ? wasCheckboxChecked === 'true' : true);
   const formValidation = useFormWithValidation();
@@ -20,6 +20,7 @@ export default function SearchForm({ onSubmit, previousSearchValue }) {
   };
 
   const handleCheckboxChange = (e) => {
+    onChange(e.target.checked);
     setIsCheckboxChecked(e.target.checked);
   };
 
