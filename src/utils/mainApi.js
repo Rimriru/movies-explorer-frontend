@@ -66,10 +66,12 @@ class MainApi {
 
   async getUserMovies() {
     return await fetch(`${this._baseUrl}/movies`, {
+      method: "GET",
       headers: this._headers,
       credentials: "include",
     }).then((res) => this._checkResponse(res));
   }
+
 
   async addUserMovie({
     country,

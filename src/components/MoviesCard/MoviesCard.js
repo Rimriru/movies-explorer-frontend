@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./MoviesCard.css";
 
 export default function MoviesCard({
@@ -13,39 +13,58 @@ export default function MoviesCard({
   trailerLink,
   isInSaved,
   onLike,
+  onDislike,
   thumbnail,
   movieId,
+  isLiked,
 }) {
   const [isMovieCardLiked, setIsMovieCardLiked] = useState(false);
   const [isRemoveBtnVisible, setIsRemoveBtnVisible] = useState(false);
+  const [likedMovieCardData, setlikedMovieCardData] = useState({});
 
   const countDuration = (durationInMins) => {
     const hours = Math.floor(durationInMins / 60);
     const minutes = durationInMins % 60;
-    return { hours, minutes }
+    return { hours, minutes };
   };
 
+  useEffect(() => {
+    if (isLiked && !isInSaved) {
+      setIsMovieCardLiked(true);
+    }
+  }, [isInSaved, isLiked]);
+
   const handleLikeBtnClick = () => {
-    onLike({
-      nameRU,
-      nameEN,
-      country,
-      director,
-      year,
-      description,
-      image,
-      duration,
-      trailerLink,
-      isInSaved,
-      onLike,
-      thumbnail,
-      movieId,
-    });
-    setIsMovieCardLiked(!isMovieCardLiked);
+    if (!isMovieCardLiked) {
+      onLike({
+        nameRU,
+        nameEN,
+        country,
+        director,
+        year,
+        description,
+        image,
+        duration,
+        trailerLink,
+        thumbnail,
+        movieId,
+      }).then((movieDataInDb) => {
+          setlikedMovieCardData(movieDataInDb);
+          setIsMovieCardLiked(true);
+          console.log(likedMovieCardData);
+        })
+        .catch(error =>  console.log(error));
+    } else {
+      onDislike(movieId);
+      setIsMovieCardLiked(false);
+      console.log(likedMovieCardData._id);
+    }
   };
 
   const handleRemoveBtnClick = (e) => {
-    e.target.closest(".movie-card").remove();
+    console.log(movieId);
+    onDislike(movieId);
+    // e.target.closest(".movie-card").remove();
   };
 
   const handleMovieCardHoverOn = () => {
@@ -84,7 +103,9 @@ export default function MoviesCard({
           type="button"
         ></button>
       </div>
-      <p className="movie-card__duration">{`${countDuration(duration).hours}ч ${countDuration(duration).minutes}м`}</p>
+      <p className="movie-card__duration">{`${countDuration(duration).hours}ч ${
+        countDuration(duration).minutes
+      }м`}</p>
     </article>
   );
 }

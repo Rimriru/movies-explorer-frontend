@@ -1,7 +1,7 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
-export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike }) {
+export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike, onDislike }) {
   return (
     <section className={`movies-cards ${moviesArray.length !== 0 ? "movies-cards_visible" : ""}`}>
       <ul className="movies-cards__list">
@@ -19,9 +19,11 @@ export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRen
                 year={movie.year}
                 description={movie.description}
                 thumbnail={isListInSaved ? movie.thumbnail : `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}
-                movieId={movie.id}
+                movieId={isListInSaved? movie.movieId : movie.id}
+                isLiked={movie.isLiked}
                 isInSaved={isListInSaved}
                 onLike={onLike}
+                onDislike={onDislike}
               />
             </li>
           );

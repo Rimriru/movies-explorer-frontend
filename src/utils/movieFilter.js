@@ -28,4 +28,20 @@ const showMovieArray = (arr, isCheckboxChecked) => {
   }
 }
 
-export default showMovieArray;
+const isCardLiked = (savedMoviesArray, movieArray) => {
+  if (savedMoviesArray && movieArray) {
+    return movieArray.map((movie) => {
+      const foundMovie = savedMoviesArray.find(
+        (savedMovie) => savedMovie.movieId === movie.id
+      );
+      if (foundMovie) {
+        return { ...movie, isLiked: true };
+      }
+      return movie;
+    });
+  } else {
+    return;
+  }
+};
+
+export { showMovieArray, isCardLiked };

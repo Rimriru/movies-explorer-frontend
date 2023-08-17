@@ -7,7 +7,7 @@ import {
   notFoundErrorMessage,
 } from "../../utils/constants.js";
 import "./Movies.css";
-import showMovieArray from "../../utils/movieFilter.js";
+import { showMovieArray, isCardLiked } from "../../utils/movieFilter.js";
 
 export default function Movies({
   isPreloaderVisible,
@@ -17,7 +17,9 @@ export default function Movies({
   onSubmit,
   onClick,
   onLike,
+  onDislike,
   moviesToRender,
+  savedMoviesArray,
 }) {
   const [previousSearch, setPreviousSearch] = useState({
     title: "",
@@ -45,7 +47,7 @@ export default function Movies({
       title: previousSearchMovieTitle,
       moviesArray: previousFilteredMoviesArray || moviesArray,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moviesArray]);
 
   const handleCheckboxChange = (isChecked) => {
@@ -53,6 +55,7 @@ export default function Movies({
     const newMovieArray = showMovieArray(previousArray, isChecked);
     setPreviousSearch({ moviesArray: newMovieArray });
   };
+
 
   return (
     <main className="movies">
@@ -63,11 +66,13 @@ export default function Movies({
       />
       {previousSearch.moviesArray && (
         <MoviesCardList
-          moviesArray={previousSearch.moviesArray}
+          moviesArray={isCardLiked(savedMoviesArray, previousSearch.moviesArray)}
           isListInSaved={false}
           moviesToRender={moviesToRender}
+          savedMoviesArray={savedMoviesArray}
           onClick={onClick}
           onLike={onLike}
+          onDislike={onDislike}
         />
       )}
       {isPreloaderVisible ? (
@@ -75,10 +80,9 @@ export default function Movies({
       ) : (
         <span
           className={`movies__error ${
-            isApiErrorShown ||
-            isNotFoundErrorShown
-            // previousSearch.moviesArray.length === 0
-              ? "movies__error_visible"
+            isApiErrorShown || isNotFoundErrorShown
+              ? // previousSearch.moviesArray.length === 0
+                "movies__error_visible"
               : ""
           }`}
         >

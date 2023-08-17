@@ -15,10 +15,11 @@ import useWindowResize from "../../utils/windowResize";
 import mainApi from "../../utils/mainApi.js";
 import moviesApi from "../../utils/moviesApi.js";
 import ProtectedRouteElement from "../ProtectedRoute.js";
-import showMovieArray from "../../utils/movieFilter.js";
+import { showMovieArray, isCardLiked } from "../../utils/movieFilter.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [savedMoviesArray, setSavedMoviesArray] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState("");
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
@@ -37,15 +38,11 @@ function App() {
   }, []);
 
   const checkToken = () => {
-    const token = document.cookie.jwt;
-    console.log(document.cookie);
-    if(token) {
+    mainApi.getUserInfo().then(res => {
+      setCurrentUser(res);
       setIsLoggedIn(true);
       navigate('/movies');
-      mainApi.getUserInfo().then(res => {
-        setCurrentUser(res);
-      }).catch(console.error);
-    }
+    }).catch(console.error);
   };
 
   useEffect(() => {
@@ -57,6 +54,20 @@ function App() {
       setMoviesToRender(5);
     }
   }, [isDesktop, isTab, isMobile]);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      mainApi.getUserMovies().then(res => {
+        if(Array.isArray(res)) {
+          setSavedMoviesArray(res);
+        }
+      }).catch(error => console.log(error));
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    isCardLiked(savedMoviesArray, filteredMoviesArray);
+  }, [savedMoviesArray, filteredMoviesArray]);
 
 
   const handleSignOutBtnClick = () => {
@@ -115,8 +126,21 @@ function App() {
       });
   };
 
-  const handleLikeBtnClick = (movieData) => {
-    mainApi.addUserMovie(movieData).then().catch((err) => setError(err.message));
+  const handleLikeBtnClick = async (movieData) => {
+    const newSavedMovie = await mainApi.addUserMovie(movieData).then(res => res).catch(console.error);
+    setSavedMoviesArray(state => [...state, newSavedMovie]);
+    console.log(savedMoviesArray);
+    return newSavedMovie;
+  };
+
+  const handleDislikeBtnClick = (movieId) => {
+    console.log(savedMoviesArray);
+    // console.log({ movieId: movieId });
+    const movieInSaved = savedMoviesArray.find(savedMovie => savedMovie.movieId === movieId);
+    // console.log(movieInSaved);
+    return mainApi.removeUserMovie(movieInSaved._id).then(() => {
+      setSavedMoviesArray(state => state.filter(movie => movie._id !== movieInSaved._id));
+    }).catch(console.error);
   };
 
   return (
@@ -137,9 +161,11 @@ function App() {
               isApiErrorShown={isApiErrorShown}
               isNotFoundErrorShown={isNotFoundErrorShown}
               moviesToRender={moviesToRender}
+              savedMoviesArray={savedMoviesArray}
               onSubmit={handleSearchFormSubmit}
               onClick={handleMoreBtnClick}
               onLike={handleLikeBtnClick}
+              onDislike={handleDislikeBtnClick}
             />
           }
         />
@@ -150,6 +176,8 @@ function App() {
               loggedIn={isLoggedIn}
               element={SavedMovies}
               moviesToRender={moviesToRender}
+              savedMoviesArray={savedMoviesArray}
+              onDislike={handleDislikeBtnClick}
             />
           }
         />
