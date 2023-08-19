@@ -50,6 +50,10 @@
   border-bottom: var(--links-and-buttons-color) 1px solid;
 }
 
+.profile__input:invalid {
+  color: var(--error-color);
+}
+
 .profile__btn-container {
   margin-top: 220px;
 }

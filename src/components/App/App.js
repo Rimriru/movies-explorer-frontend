@@ -30,6 +30,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState("");
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
+  const [originalMoviesArray, setOriginalMoviesArray] = useState([]);
   const [filteredMoviesArray, setFilteredMoviesArray] = useState([]);
   const [isApiErrorShown, setIsApiErrorShown] = useState(false);
   const [isNotFoundErrorShown, setIsNotFoundErrorShown] = useState(false);
@@ -49,9 +50,9 @@ function App() {
     mainApi
       .getUserInfo()
       .then((res) => {
-        if(res.message) {
+        if (res.message) {
           setIsLoggedIn(false);
-          navigate("/signin");
+          // navigate("/signin");
         } else {
           setCurrentUser(res);
           setIsLoggedIn(true);
@@ -111,12 +112,12 @@ function App() {
     mainApi
       .register({ email, name, password })
       .then((res) => {
-        if (res.status !== 200) {
-          setError(res.message || 'При регистрации пользователя произошла ошибка.');
-          return;
+        if (res.message) {
+          setError(
+            res.message || "При регистрации пользователя произошла ошибка."
+          );
         } else {
           navigate("/signin");
-          return; 
         }
       })
       .catch((err) => setError(err.message));
@@ -126,29 +127,34 @@ function App() {
     mainApi
       .login({ email, password })
       .then((res) => {
-        if (res.status !== 200) {
-          setError(res.message || 'При авторизации произошла ошибка.');
-          return;
+        console.log(res);
+        if (res.message !== "Вы успешно залогинились!") {
+          setError(res.message || "При авторизации произошла ошибка.");
         } else {
           setIsLoggedIn(true);
           navigate("/movies");
         }
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleUserDataUpdate = (userData) => {
-    mainApi.updateUserInfo(userData).then(res => {
-      if (res.status !== 200) {
-        setError(res.message || 'При обновлении профиля произошла ошибка.');
-        return;
-      } else {
-        setError("");
-        setCurrentUser(res);
-      }
-    }).catch(error => {
-      console.log(error);
-    });
+    mainApi
+      .updateUserInfo(userData)
+      .then((res) => {
+        if (res.message) {
+          setError(res.message || "При обновлении профиля произошла ошибка.");
+          return;
+        } else {
+          setError("");
+          setCurrentUser(res);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleMoreBtnClick = () =>
@@ -156,29 +162,35 @@ function App() {
       ? setMoviesToRender(moviesToRender + 4)
       : setMoviesToRender(moviesToRender + 2);
 
-  const handleSearchFormSubmit = (isCheckboxChecked) => {
-    setIsNotFoundErrorShown(false);
-    setIsPreloaderVisible(true);
-    setFilteredMoviesArray([]);
-    localStorage.setItem("filteredMoviesArray", null);
-    moviesApi
-      .getMovies()
-      .then((res) => {
-        const filteredArray = showMovieArray(res, isCheckboxChecked);
-        if (filteredArray.length === 0) {
-          setIsNotFoundErrorShown(true);
-        }
-        setIsPreloaderVisible(false);
-        setFilteredMoviesArray(filteredArray);
-        localStorage.setItem(
-          "filteredMoviesArray",
-          JSON.stringify(filteredArray)
-        );
-      })
-      .catch(() => {
-        setIsPreloaderVisible(false);
-        setIsApiErrorShown(true);
-      });
+  const handleSearchFormSubmit = async (isCheckboxChecked) => {
+    try {
+      setIsPreloaderVisible(true);
+      setIsNotFoundErrorShown(false);
+      setFilteredMoviesArray([]);
+      localStorage.setItem("filteredMoviesArray", null);
+      const originalMovies = originalMoviesArray.length === 0 ? 
+        await moviesApi.getMovies() :
+        originalMoviesArray;
+
+      setOriginalMoviesArray(originalMovies);
+      
+      const filteredArray = showMovieArray(
+        originalMoviesArray,
+        isCheckboxChecked
+      );
+      if (filteredArray.length === 0) {
+        setIsNotFoundErrorShown(true);
+      }
+      setFilteredMoviesArray(filteredArray);
+      localStorage.setItem(
+        "filteredMoviesArray",
+        JSON.stringify(filteredArray)
+      );
+    } catch (error) {
+      setIsApiErrorShown(true);
+    } finally {
+      setIsPreloaderVisible(false);
+    }
   };
 
   const handleLikeBtnClick = async (movieData) => {
@@ -202,6 +214,10 @@ function App() {
         );
       })
       .catch(console.error);
+  };
+
+  const handleValidatedInputChange = () => {
+    setError("");
   };
 
   return (
@@ -260,6 +276,7 @@ function App() {
                 element={Profile}
                 onSignOut={handleSignOutBtnClick}
                 onSubmit={handleUserDataUpdate}
+                onChange={handleValidatedInputChange}
                 error={error}
               />
             ) : (
@@ -269,11 +286,23 @@ function App() {
         />
         <Route
           path="/signup"
-          element={<Register onSubmit={handleRegisterFormSubmit} error={error} />}
+          element={
+            <Register
+              onSubmit={handleRegisterFormSubmit}
+              onChange={handleValidatedInputChange}
+              error={error}
+            />
+          }
         />
         <Route
           path="/signin"
-          element={<Login onSubmit={handleLoginFormSubmit} error={error} />}
+          element={
+            <Login
+              onSubmit={handleLoginFormSubmit}
+              onChange={handleValidatedInputChange}
+              error={error}
+            />
+          }
         />
         <Route path="/*" element={<NotFound />} />
       </Routes>

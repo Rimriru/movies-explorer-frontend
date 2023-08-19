@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { emailRegExp } from "../../utils/formValidation";
 import "./Login.css";
 
-export default function Login({ onSubmit, error }) {
+export default function Login({ onSubmit, onChange, error }) {
   const formValidation = useFormWithValidation();
   const emailError = formValidation.errors.email;
   const passwordError = formValidation.errors.password;
@@ -15,6 +15,11 @@ export default function Login({ onSubmit, error }) {
     onSubmit(formValidation.values);
   };
 
+  const handleChange = (e) => {
+    formValidation.handleChange(e);
+    onChange();
+  };
+
   return (
     <main>
       <section className="auth-content">
@@ -22,7 +27,7 @@ export default function Login({ onSubmit, error }) {
           <div className="logo logo_auth"></div>
         </Link>
         <h1 className="auth-content__heading">Рады видеть!</h1>
-        <AuthRegisterForm isValid={formValidation.isValid} onSubmit={handleSubmit}>
+        <AuthRegisterForm isValid={formValidation.isValid} error={error} onSubmit={handleSubmit}>
           <label className="auth-content__label" htmlFor="email">
             E-mail
             <input
@@ -33,7 +38,7 @@ export default function Login({ onSubmit, error }) {
               placeholder="Введите Ваш E-mail"
               pattern={emailRegExp}
               autoComplete="false"
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
             />
           </label>
           <span className={`auth-content__error ${emailError ? "auth-content__error_visible" : ""}`}>{emailError}</span>
@@ -48,7 +53,7 @@ export default function Login({ onSubmit, error }) {
               required
               placeholder="А здесь Ваш пароль"
               autoComplete="false"
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
             />
           </label>
           <span className={`auth-content__error ${passwordError ? "auth-content__error_visible" : ""}`}>{passwordError}</span>

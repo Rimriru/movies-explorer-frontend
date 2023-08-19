@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { emailRegExp, nameRegExp } from "../../utils/formValidation";
 import "./Register.css";
 
-export default function Register({ onSubmit, error }) {
+export default function Register({ onSubmit, onChange, error }) {
+
   const formValidation = useFormWithValidation();
   const nameError = formValidation.errors.name;
   const emailError = formValidation.errors.email;
@@ -15,6 +16,11 @@ export default function Register({ onSubmit, error }) {
     e.preventDefault();
     onSubmit(formValidation.values);
   };
+
+  const handleChange = (e) => {
+    formValidation.handleChange(e);
+    onChange();
+  };
   
   return (
     <main>
@@ -23,7 +29,7 @@ export default function Register({ onSubmit, error }) {
           <div className="logo logo_auth"></div>
         </Link>
         <h1 className="auth-content__heading">Добро пожаловать!</h1>
-        <AuthLoginForm isRegister={true} isValid={formValidation.isValid} onSubmit={handleSubmit} >
+        <AuthLoginForm isRegister={true} isValid={formValidation.isValid} error={error} onSubmit={handleSubmit} >
           <label className="auth-content__label" htmlFor="name">
             Имя
             <input
@@ -35,7 +41,7 @@ export default function Register({ onSubmit, error }) {
               placeholder="Введите Ваше имя"
               pattern={nameRegExp}
               autoComplete="false"
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
             />
           </label>
           <span className={`auth-content__error ${nameError ? "auth-content__error_visible" : ""}`}>{nameError}</span>
@@ -47,7 +53,7 @@ export default function Register({ onSubmit, error }) {
               type="email"
               required
               placeholder="Введите Ваш E-mail"
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
               pattern={emailRegExp}
               autoComplete="false"
             />
@@ -63,7 +69,7 @@ export default function Register({ onSubmit, error }) {
               maxLength={20}
               required
               placeholder="Введите Ваш пароль"
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
               autoComplete="false"
             />
           </label>

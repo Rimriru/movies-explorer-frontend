@@ -5,7 +5,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { nameRegExp, emailRegExp } from "../../utils/formValidation";
 import "./Profile.css";
 
-export default function Profile({ onSignOut, onSubmit, error }) {
+export default function Profile({ onSignOut, onSubmit, onChange, error }) {
   const currentUserData = useContext(CurrentUserContext);
   const formValidation = useFormWithValidation();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
@@ -34,6 +34,7 @@ export default function Profile({ onSignOut, onSubmit, error }) {
       name: name !== undefined ? name : userData.name,
       email: email !== undefined ? email : userData.email
     };
+    console.log(`valuesToSubmit ${valuesToSubmit}`);
     onSubmit(valuesToSubmit);
     if(!error) {
       setIsInputDisabled(true);
@@ -44,7 +45,12 @@ export default function Profile({ onSignOut, onSubmit, error }) {
 
   const handleSignOut = () => {
     onSignOut();
-  };
+  }; 
+
+  const handleChange = (e) => {
+    formValidation.handleChange(e);
+    onChange();
+  }
 
   return (
     <main>
@@ -69,7 +75,7 @@ export default function Profile({ onSignOut, onSubmit, error }) {
               disabled={isInputDisabled}
               defaultValue={userData.name}
               pattern={nameRegExp}
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
             />
           </label>
           <label className="profile__label">
@@ -82,7 +88,7 @@ export default function Profile({ onSignOut, onSubmit, error }) {
               disabled={isInputDisabled}
               defaultValue={userData.email}
               pattern={emailRegExp}
-              onChange={formValidation.handleChange}
+              onChange={handleChange}
             />
           </label>
           {isInputDisabled ? (
@@ -105,7 +111,7 @@ export default function Profile({ onSignOut, onSubmit, error }) {
           ) : (
             <>
               <ApiErrorMessage placement="profile" errorText={error} />
-              <button className="profile__submit-btn" type="submit" disabled={!formValidation.isValid}>
+              <button className="profile__submit-btn" type="submit" disabled={!formValidation.isValid || error}>
                 Сохранить
               </button>
             </>
