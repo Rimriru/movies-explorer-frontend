@@ -1,7 +1,7 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
-export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike, onDislike }) {
+export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike, onDislike, isTabOrMobile }) {
   return (
     <section className={`movies-cards ${moviesArray.length !== 0 ? "movies-cards_visible" : ""}`}>
       <ul className="movies-cards__list">
@@ -22,6 +22,7 @@ export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRen
                 movieId={isListInSaved? movie.movieId : movie.id}
                 isLiked={movie.isLiked}
                 isInSaved={isListInSaved}
+                isTabOrMobile={isTabOrMobile}
                 onLike={onLike}
                 onDislike={onDislike}
               />

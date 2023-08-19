@@ -17,10 +17,10 @@ export default function MoviesCard({
   thumbnail,
   movieId,
   isLiked,
+  isTabOrMobile
 }) {
   const [isMovieCardLiked, setIsMovieCardLiked] = useState(false);
-  const [isRemoveBtnVisible, setIsRemoveBtnVisible] = useState(false);
-  const [likedMovieCardData, setlikedMovieCardData] = useState({});
+  const [isRemoveBtnVisible, setIsRemoveBtnVisible] = useState(isTabOrMobile ? true : false);
 
   const countDuration = (durationInMins) => {
     const hours = Math.floor(durationInMins / 60);
@@ -48,23 +48,18 @@ export default function MoviesCard({
         trailerLink,
         thumbnail,
         movieId,
-      }).then((movieDataInDb) => {
-          setlikedMovieCardData(movieDataInDb);
+      }).then(() => {
           setIsMovieCardLiked(true);
-          console.log(likedMovieCardData);
         })
         .catch(error =>  console.log(error));
     } else {
       onDislike(movieId);
       setIsMovieCardLiked(false);
-      console.log(likedMovieCardData._id);
     }
   };
 
-  const handleRemoveBtnClick = (e) => {
-    console.log(movieId);
+  const handleRemoveBtnClick = () => {
     onDislike(movieId);
-    // e.target.closest(".movie-card").remove();
   };
 
   const handleMovieCardHoverOn = () => {

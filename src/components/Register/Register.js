@@ -2,9 +2,10 @@ import AuthLoginForm from "../AuthRegisterForm/AuthRegisterForm";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useFormWithValidation }  from "../../utils/formValidation";
 import { Link } from "react-router-dom";
+import { emailRegExp, nameRegExp } from "../../utils/formValidation";
 import "./Register.css";
 
-export default function Register({ onSubmit }) {
+export default function Register({ onSubmit, error }) {
   const formValidation = useFormWithValidation();
   const nameError = formValidation.errors.name;
   const emailError = formValidation.errors.email;
@@ -32,6 +33,8 @@ export default function Register({ onSubmit }) {
               minLength={2}
               maxLength={30}
               placeholder="Введите Ваше имя"
+              pattern={nameRegExp}
+              autoComplete="false"
               onChange={formValidation.handleChange}
             />
           </label>
@@ -45,7 +48,8 @@ export default function Register({ onSubmit }) {
               required
               placeholder="Введите Ваш E-mail"
               onChange={formValidation.handleChange}
-              pattern="\S*@\S*\.\S*"
+              pattern={emailRegExp}
+              autoComplete="false"
             />
           </label>
           <span className={`auth-content__error ${emailError ? "auth-content__error_visible" : ""}`}>{emailError}</span>
@@ -60,12 +64,13 @@ export default function Register({ onSubmit }) {
               required
               placeholder="Введите Ваш пароль"
               onChange={formValidation.handleChange}
+              autoComplete="false"
             />
           </label>
           <span className={`auth-content__error ${passwordError ? "auth-content__error_visible" : ""}`}>
             {passwordError}
           </span>
-          <ApiErrorMessage placement="register" />
+          <ApiErrorMessage placement="register" errorText={error} />
         </AuthLoginForm>
       </section>
     </main>

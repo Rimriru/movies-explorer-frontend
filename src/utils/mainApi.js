@@ -52,14 +52,14 @@ class MainApi {
     }).then((res) => this._checkResponse(res));
   }
 
-  async updateUserInfo({ email, password }) {
-    return await fetch(`${this.baseUrl}/users/me`, {
+  async updateUserInfo({ email, name }) {
+    return await fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         email: email,
-        password: password,
+        name: name
       }),
     }).then((res) => this._checkResponse(res));
   }

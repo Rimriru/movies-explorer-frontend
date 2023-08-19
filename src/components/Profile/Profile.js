@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
-import { useForm } from "../../utils/formValidation";
+import { useFormWithValidation } from "../../utils/formValidation";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { nameRegExp, emailRegExp } from "../../utils/formValidation";
 import "./Profile.css";
 
-export default function Profile({ onSignOut, error }) {
-  const formManagement = useForm();
-  const nameInputValue = formManagement.values.name;
-  // будет подтягиваться юзер с сервера на следующем этапе, но пока так
-  // все обработчики будут в app
+export default function Profile({ onSignOut, onSubmit, error }) {
+  const currentUserData = useContext(CurrentUserContext);
+  const formValidation = useFormWithValidation();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [userData, setUserData] = useState({ name: "", email: "" });
+
+  useEffect(() => {
+    setUserData({ name: currentUserData.name, email: currentUserData.email });
+  }, [currentUserData]);
+
+  useEffect(() => {
+    if(error) {
+      setIsInputDisabled(false);
+    } else {
+      setIsInputDisabled(true);
+    }
+  }, [error]);
 
   const handleEditProfileBtnClick = () => {
     setIsInputDisabled(false);
@@ -16,7 +29,17 @@ export default function Profile({ onSignOut, error }) {
 
   const handleProfileFormSubmit = (e) => {
     e.preventDefault();
-    setIsInputDisabled(true);
+    const { name, email } = formValidation.values;
+    const valuesToSubmit = {
+      name: name !== undefined ? name : userData.name,
+      email: email !== undefined ? email : userData.email
+    };
+    onSubmit(valuesToSubmit);
+    if(!error) {
+      setIsInputDisabled(true);
+    } else {
+      setIsInputDisabled(false);
+    }
   };
 
   const handleSignOut = () => {
@@ -27,7 +50,7 @@ export default function Profile({ onSignOut, error }) {
     <main>
       <section className="profile">
         <h1 className="profile__heading">{`Привет, ${
-          nameInputValue !== undefined ? nameInputValue : ""
+          userData.name
         }!`}</h1>
         <form
           className="profile__form"
@@ -44,7 +67,9 @@ export default function Profile({ onSignOut, error }) {
               minLength={2}
               maxLength={30}
               disabled={isInputDisabled}
-              onChange={formManagement.handleChange}
+              defaultValue={userData.name}
+              pattern={nameRegExp}
+              onChange={formValidation.handleChange}
             />
           </label>
           <label className="profile__label">
@@ -55,7 +80,9 @@ export default function Profile({ onSignOut, error }) {
               required
               type="email"
               disabled={isInputDisabled}
-              onChange={formManagement.handleChange}
+              defaultValue={userData.email}
+              pattern={emailRegExp}
+              onChange={formValidation.handleChange}
             />
           </label>
           {isInputDisabled ? (
@@ -78,7 +105,7 @@ export default function Profile({ onSignOut, error }) {
           ) : (
             <>
               <ApiErrorMessage placement="profile" errorText={error} />
-              <button className="profile__submit-btn" type="submit">
+              <button className="profile__submit-btn" type="submit" disabled={!formValidation.isValid}>
                 Сохранить
               </button>
             </>

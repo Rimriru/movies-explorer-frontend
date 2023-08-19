@@ -2,9 +2,10 @@ import AuthRegisterForm from "../AuthRegisterForm/AuthRegisterForm";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useFormWithValidation }  from "../../utils/formValidation";
 import { Link } from "react-router-dom";
+import { emailRegExp } from "../../utils/formValidation";
 import "./Login.css";
 
-export default function Login({ onSubmit }) {
+export default function Login({ onSubmit, error }) {
   const formValidation = useFormWithValidation();
   const emailError = formValidation.errors.email;
   const passwordError = formValidation.errors.password;
@@ -30,7 +31,8 @@ export default function Login({ onSubmit }) {
               type="email"
               required
               placeholder="Введите Ваш E-mail"
-              pattern="\S*@\S*\.\S*"
+              pattern={emailRegExp}
+              autoComplete="false"
               onChange={formValidation.handleChange}
             />
           </label>
@@ -45,11 +47,12 @@ export default function Login({ onSubmit }) {
               maxLength={20}
               required
               placeholder="А здесь Ваш пароль"
+              autoComplete="false"
               onChange={formValidation.handleChange}
             />
           </label>
           <span className={`auth-content__error ${passwordError ? "auth-content__error_visible" : ""}`}>{passwordError}</span>
-          <ApiErrorMessage placement="login" />
+          <ApiErrorMessage placement="login" errorText={error} />
         </AuthRegisterForm>
       </section>
     </main>

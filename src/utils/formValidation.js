@@ -13,7 +13,7 @@ export function useForm() {
   return {values, handleChange, setValues};
 }
 
-export function useFormWithValidation() {
+function useFormWithValidation() {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -38,3 +38,9 @@ export function useFormWithValidation() {
 
   return { values, handleChange, errors, isValid, resetForm };
 }
+
+const emailRegExp = '\\S*@\\S*\\.\\S*';
+const nameRegExp = '^[\\-A-Za-z\\s]*$';
+
+
+export { useFormWithValidation, emailRegExp, nameRegExp }
