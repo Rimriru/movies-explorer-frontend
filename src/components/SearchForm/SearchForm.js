@@ -3,25 +3,32 @@ import { useFormWithValidation } from "../../utils/formValidation";
 import { useState, useEffect } from "react";
 import "./SearchForm.css";
 
-export default function SearchForm({ onSubmit, onChange, previousSearchValue }) {
-  const wasCheckboxChecked = localStorage.getItem("isCheckboxChecked");
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(wasCheckboxChecked !== null ? wasCheckboxChecked === 'true' : true);
+export default function SearchForm({ isInSaved, onSubmit, onChange, previousSearchValue, wasCheckboxChecked }) {
+  // const wasCheckboxChecked = localStorage.getItem("isCheckboxChecked");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(wasCheckboxChecked !== null && !isInSaved ? wasCheckboxChecked === 'true' : true);
   const formValidation = useFormWithValidation();
   const searchInputError = formValidation.errors.title;
 
   useEffect(() => {
-    localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
-  }, [isCheckboxChecked]);
+    if (!isInSaved) {
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
+    }
+  }, [isInSaved, isCheckboxChecked]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("title", formValidation.values.title);
-    onSubmit(isCheckboxChecked);
+    if (!isInSaved) {
+      localStorage.setItem("title", formValidation.values.title);
+    }
+    onSubmit(formValidation.values.title, isCheckboxChecked);
   };
 
   const handleCheckboxChange = (e) => {
-    onChange(e.target.checked);
+    const givenTitle = isInSaved ? formValidation.values.title : localStorage.getItem("title");
     setIsCheckboxChecked(e.target.checked);
+    if (givenTitle) {
+      onChange(givenTitle, e.target.checked);
+    }
   };
 
   return (

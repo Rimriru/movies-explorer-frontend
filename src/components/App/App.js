@@ -26,12 +26,13 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [savedMoviesArray, setSavedMoviesArray] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState("");
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
   const [originalMoviesArray, setOriginalMoviesArray] = useState([]);
   const [filteredMoviesArray, setFilteredMoviesArray] = useState([]);
+  const [savedMoviesArray, setSavedMoviesArray] = useState([]);
+  const [filteredSavedMoviesArray, setFilteredSavedMoviesArray] = useState([]);
   const [isApiErrorShown, setIsApiErrorShown] = useState(false);
   const [isNotFoundErrorShown, setIsNotFoundErrorShown] = useState(false);
   const [moviesToRender, setMoviesToRender] = useState(16);
@@ -83,6 +84,7 @@ function App() {
         .then((res) => {
           if (Array.isArray(res)) {
             setSavedMoviesArray(res);
+            setFilteredSavedMoviesArray(res);
           } else if (res.message && res.statusCode === 404) {
             setSavedMoviesArray([]);
           }
@@ -95,6 +97,7 @@ function App() {
 
   useEffect(() => {
     isCardLiked(savedMoviesArray, filteredMoviesArray);
+    setFilteredSavedMoviesArray(savedMoviesArray);
   }, [savedMoviesArray, filteredMoviesArray]);
 
   const handleSignOutBtnClick = () => {
@@ -103,6 +106,7 @@ function App() {
       .then(() => {
         setIsLoggedIn(false);
         localStorage.clear();
+        setSavedMoviesArray([]);
         navigate("/");
       })
       .catch((err) => setError(err.message));
@@ -127,7 +131,6 @@ function App() {
     mainApi
       .login({ email, password })
       .then((res) => {
-        console.log(res);
         if (res.message !== "Вы успешно залогинились!") {
           setError(res.message || "При авторизации произошла ошибка.");
         } else {
@@ -162,7 +165,7 @@ function App() {
       ? setMoviesToRender(moviesToRender + 4)
       : setMoviesToRender(moviesToRender + 2);
 
-  const handleSearchFormSubmit = async (isCheckboxChecked) => {
+  const handleMoviesSearchFormSubmit = async (title, isCheckboxChecked) => {
     try {
       setIsPreloaderVisible(true);
       setIsNotFoundErrorShown(false);
@@ -175,7 +178,8 @@ function App() {
       setOriginalMoviesArray(originalMovies);
       
       const filteredArray = showMovieArray(
-        originalMoviesArray,
+        originalMovies,
+        title,
         isCheckboxChecked
       );
       if (filteredArray.length === 0) {
@@ -191,6 +195,24 @@ function App() {
     } finally {
       setIsPreloaderVisible(false);
     }
+  };
+
+  const handleSavedMoviesSearchFormSubmit = (title, isCheckboxChecked) => {
+    setIsNotFoundErrorShown(false);
+    const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isCheckboxChecked);
+    if (filteredSavedMovies.length === 0) {
+      setIsNotFoundErrorShown(true);
+    }
+    setFilteredSavedMoviesArray(filteredSavedMovies);
+  }
+
+  const handleCheckboxInSavedChange = (title, isChecked) => {
+    setIsNotFoundErrorShown(false);
+    const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isChecked);
+    if (filteredSavedMovies.length === 0) {
+      setIsNotFoundErrorShown(true);
+    }
+    setFilteredSavedMoviesArray(filteredSavedMovies);
   };
 
   const handleLikeBtnClick = async (movieData) => {
@@ -240,13 +262,13 @@ function App() {
                 isNotFoundErrorShown={isNotFoundErrorShown}
                 moviesToRender={moviesToRender}
                 savedMoviesArray={savedMoviesArray}
-                onSubmit={handleSearchFormSubmit}
+                onSubmit={handleMoviesSearchFormSubmit}
                 onClick={handleMoreBtnClick}
                 onLike={handleLikeBtnClick}
                 onDislike={handleDislikeBtnClick}
               />
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />
@@ -258,12 +280,15 @@ function App() {
                 loggedIn={isLoggedIn}
                 element={SavedMovies}
                 moviesToRender={moviesToRender}
-                savedMoviesArray={savedMoviesArray}
+                moviesArray={filteredSavedMoviesArray}
+                isNotFoundErrorShown={isNotFoundErrorShown}
                 isTabOrMobile={isTabOrMobile}
                 onDislike={handleDislikeBtnClick}
+                onSubmit={handleSavedMoviesSearchFormSubmit}
+                onChange={handleCheckboxInSavedChange}
               />
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />
@@ -280,7 +305,7 @@ function App() {
                 error={error}
               />
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />

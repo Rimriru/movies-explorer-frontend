@@ -1,28 +1,23 @@
-const filterMovieArray = (arr) => {
-  const searchMovieTitleLowered = localStorage.getItem("title").toLowerCase();
+const filterMovieArray = (arr, title, isCheckboxChecked) => {
+  const searchMovieTitleLowered = title.toLowerCase();
   const isTitleLatin = /[a-z]/.test(searchMovieTitleLowered);
   if (arr) {
-    const filteredAllMoviesArray = arr.filter((movie) =>
-      (isTitleLatin ? movie.nameEN : movie.nameRU)
-        .toLowerCase()
-        .includes(searchMovieTitleLowered)
-    );
-    const filteredWithoutShortMoviesArray = arr.filter(
+    const filteredMoviesArray = arr.filter(
       (movie) =>
         (isTitleLatin ? movie.nameEN : movie.nameRU)
           .toLowerCase()
-          .includes(searchMovieTitleLowered) && movie.duration > 40
+          .includes(searchMovieTitleLowered) && (!isCheckboxChecked ? movie.duration > 40 : movie.duration > 0)
     );
-    return { filteredAllMoviesArray, filteredWithoutShortMoviesArray};
+    return filteredMoviesArray;
   } else {
-    return { filteredAllMoviesArray: [], filteredWithoutShortMoviesArray: [] };
+    return [];
   }
 };
 
-const showMovieArray = (arr, isCheckboxChecked) => {
+const showMovieArray = (arr, title, isCheckboxChecked) => {
   try {
-    const { filteredAllMoviesArray, filteredWithoutShortMoviesArray } = filterMovieArray(arr);
-    return isCheckboxChecked ? filteredAllMoviesArray : filteredWithoutShortMoviesArray;
+    const filteredMoviesArray = filterMovieArray(arr, title, isCheckboxChecked);
+    return filteredMoviesArray;
   } catch (error) {
     console.log(error);
   }

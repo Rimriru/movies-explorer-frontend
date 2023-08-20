@@ -26,6 +26,8 @@ export default function Movies({
     moviesArray: [],
   });
 
+  const wasCheckboxChecked = localStorage.getItem("isCheckboxChecked");
+
   useEffect(() => {
     let previousFilteredMoviesArray = localStorage.getItem(
       "filteredMoviesArray"
@@ -50,19 +52,20 @@ export default function Movies({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moviesArray]);
 
-  const handleCheckboxChange = (isChecked) => {
+  const handleCheckboxChange = (title, isChecked) => {
     const previousArray = previousSearch.moviesArray;
-    const newMovieArray = showMovieArray(previousArray, isChecked);
-    setPreviousSearch({ moviesArray: newMovieArray });
+    const newMovieArray = showMovieArray(previousArray, title, isChecked);
+    setPreviousSearch({ title: title, moviesArray: newMovieArray });
   };
-
 
   return (
     <main className="movies">
       <SearchForm
+        isInSaved={false}
         onSubmit={onSubmit}
         onChange={handleCheckboxChange}
         previousSearchValue={previousSearch.title}
+        wasCheckboxChecked={wasCheckboxChecked}
       />
       {previousSearch.moviesArray && (
         <MoviesCardList
