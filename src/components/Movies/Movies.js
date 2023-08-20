@@ -7,7 +7,7 @@ import {
   notFoundErrorMessage,
 } from "../../utils/constants.js";
 import "./Movies.css";
-import { showMovieArray, isCardLiked } from "../../utils/movieFilter.js";
+import { isCardLiked } from "../../utils/movieFilter.js";
 
 export default function Movies({
   isPreloaderVisible,
@@ -15,6 +15,7 @@ export default function Movies({
   isApiErrorShown,
   isNotFoundErrorShown,
   onSubmit,
+  onChange,
   onClick,
   onLike,
   onDislike,
@@ -47,15 +48,14 @@ export default function Movies({
     }
     setPreviousSearch({
       title: previousSearchMovieTitle,
-      moviesArray: previousFilteredMoviesArray || moviesArray,
+      moviesArray: previousFilteredMoviesArray,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moviesArray]);
 
   const handleCheckboxChange = (title, isChecked) => {
-    const previousArray = previousSearch.moviesArray;
-    const newMovieArray = showMovieArray(previousArray, title, isChecked);
-    setPreviousSearch({ title: title, moviesArray: newMovieArray });
+    onChange(title, isChecked);
+    // setPreviousSearch({ title: title, moviesArray: newMovieArray });
   };
 
   return (

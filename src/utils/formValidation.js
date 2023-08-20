@@ -39,7 +39,7 @@ function useFormWithValidation() {
   return { values, handleChange, errors, isValid, resetForm };
 }
 
-const emailRegExp = '\\S*@\\S*\\.\\S*';
+const emailRegExp = '^[\\-A-Za-z0-9_.]+@[A-Za-z]+\\.[A-Za-z]{2,}$';
 const nameRegExp = '^[\\-A-Za-z\\s]*$';
 
 

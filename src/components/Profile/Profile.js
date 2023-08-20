@@ -18,8 +18,6 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
   useEffect(() => {
     if(error) {
       setIsInputDisabled(false);
-    } else {
-      setIsInputDisabled(true);
     }
   }, [error]);
 
@@ -34,7 +32,6 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
       name: name !== undefined ? name : userData.name,
       email: email !== undefined ? email : userData.email
     };
-    console.log(`valuesToSubmit ${valuesToSubmit}`);
     onSubmit(valuesToSubmit);
     if(!error) {
       setIsInputDisabled(true);

@@ -149,7 +149,6 @@ function App() {
       .then((res) => {
         if (res.message) {
           setError(res.message || "При обновлении профиля произошла ошибка.");
-          return;
         } else {
           setError("");
           setCurrentUser(res);
@@ -165,7 +164,7 @@ function App() {
       ? setMoviesToRender(moviesToRender + 4)
       : setMoviesToRender(moviesToRender + 2);
 
-  const handleMoviesSearchFormSubmit = async (title, isCheckboxChecked) => {
+  const handleMoviesSearchFormFilter = async (title, isCheckboxChecked) => {
     try {
       setIsPreloaderVisible(true);
       setIsNotFoundErrorShown(false);
@@ -197,7 +196,7 @@ function App() {
     }
   };
 
-  const handleSavedMoviesSearchFormSubmit = (title, isCheckboxChecked) => {
+  const handleSavedMoviesSearchFormFilter = (title, isCheckboxChecked) => {
     setIsNotFoundErrorShown(false);
     const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isCheckboxChecked);
     if (filteredSavedMovies.length === 0) {
@@ -206,14 +205,14 @@ function App() {
     setFilteredSavedMoviesArray(filteredSavedMovies);
   }
 
-  const handleCheckboxInSavedChange = (title, isChecked) => {
-    setIsNotFoundErrorShown(false);
-    const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isChecked);
-    if (filteredSavedMovies.length === 0) {
-      setIsNotFoundErrorShown(true);
-    }
-    setFilteredSavedMoviesArray(filteredSavedMovies);
-  };
+  // const handleCheckboxInSavedChange = (title, isChecked) => {
+  //   setIsNotFoundErrorShown(false);
+  //   const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isChecked);
+  //   if (filteredSavedMovies.length === 0) {
+  //     setIsNotFoundErrorShown(true);
+  //   }
+  //   setFilteredSavedMoviesArray(filteredSavedMovies);
+  // };
 
   const handleLikeBtnClick = async (movieData) => {
     const newSavedMovie = await mainApi
@@ -257,12 +256,14 @@ function App() {
                 loggedIn={isLoggedIn}
                 element={Movies}
                 isPreloaderVisible={isPreloaderVisible}
+                originalMoviesArray={originalMoviesArray}
                 moviesArray={filteredMoviesArray}
                 isApiErrorShown={isApiErrorShown}
                 isNotFoundErrorShown={isNotFoundErrorShown}
                 moviesToRender={moviesToRender}
                 savedMoviesArray={savedMoviesArray}
-                onSubmit={handleMoviesSearchFormSubmit}
+                onSubmit={handleMoviesSearchFormFilter}
+                onChange={handleMoviesSearchFormFilter}
                 onClick={handleMoreBtnClick}
                 onLike={handleLikeBtnClick}
                 onDislike={handleDislikeBtnClick}
@@ -284,8 +285,8 @@ function App() {
                 isNotFoundErrorShown={isNotFoundErrorShown}
                 isTabOrMobile={isTabOrMobile}
                 onDislike={handleDislikeBtnClick}
-                onSubmit={handleSavedMoviesSearchFormSubmit}
-                onChange={handleCheckboxInSavedChange}
+                onSubmit={handleSavedMoviesSearchFormFilter}
+                onChange={handleSavedMoviesSearchFormFilter}
               />
             ) : (
               <Navigate to="/" replace />
