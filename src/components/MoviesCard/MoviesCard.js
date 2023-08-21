@@ -29,8 +29,10 @@ export default function MoviesCard({
   };
 
   useEffect(() => {
-    if (isLiked && !isInSaved) {
+    if (!isInSaved && isLiked) {
       setIsMovieCardLiked(true);
+    } else if (!isInSaved && !isLiked) {
+      setIsMovieCardLiked(false);
     }
   }, [isInSaved, isLiked]);
 

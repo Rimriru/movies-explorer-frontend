@@ -21,7 +21,7 @@ import useWindowResize from "../../utils/windowResize";
 import mainApi from "../../utils/mainApi.js";
 import moviesApi from "../../utils/moviesApi.js";
 import ProtectedRouteElement from "../ProtectedRoute.js";
-import { showMovieArray, isCardLiked } from "../../utils/movieFilter.js";
+import { showMovieArray } from "../../utils/movieFilter.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 function App() {
@@ -95,9 +95,8 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    isCardLiked(savedMoviesArray, filteredMoviesArray);
     setFilteredSavedMoviesArray(savedMoviesArray);
-  }, [savedMoviesArray, filteredMoviesArray]);
+  }, [savedMoviesArray]);
 
   const handleSignOutBtnClick = () => {
     mainApi
@@ -172,7 +171,7 @@ function App() {
       const originalMovies = originalMoviesArray.length === 0 ? 
         await moviesApi.getMovies() :
         originalMoviesArray;
-
+  
       setOriginalMoviesArray(originalMovies);
       
       const filteredArray = showMovieArray(
@@ -183,6 +182,7 @@ function App() {
       if (filteredArray.length === 0) {
         setIsNotFoundErrorShown(true);
       }
+      console.log(filteredArray);
       setFilteredMoviesArray(filteredArray);
       localStorage.setItem(
         "filteredMoviesArray",
