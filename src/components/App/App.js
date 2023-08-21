@@ -53,7 +53,6 @@ function App() {
       .then((res) => {
         if (res.message) {
           setIsLoggedIn(false);
-          // navigate("/signin");
         } else {
           setCurrentUser(res);
           setIsLoggedIn(true);
@@ -75,7 +74,7 @@ function App() {
     } else if (isMobile) {
       setMoviesToRender(5);
     }
-  }, [isDesktop, isTab, isMobile]);
+  }, [isDesktop, isTab, isMobile, filteredMoviesArray]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -107,6 +106,7 @@ function App() {
         setIsLoggedIn(false);
         localStorage.clear();
         setSavedMoviesArray([]);
+        setCurrentUser({});
         navigate("/");
       })
       .catch((err) => setError(err.message));
@@ -134,8 +134,9 @@ function App() {
         if (res.message !== "Вы успешно залогинились!") {
           setError(res.message || "При авторизации произошла ошибка.");
         } else {
-          setIsLoggedIn(true);
-          navigate("/movies");
+          checkToken();
+          // setIsLoggedIn(true);
+          // navigate("/movies");
         }
       })
       .catch((err) => {
@@ -204,15 +205,6 @@ function App() {
     }
     setFilteredSavedMoviesArray(filteredSavedMovies);
   }
-
-  // const handleCheckboxInSavedChange = (title, isChecked) => {
-  //   setIsNotFoundErrorShown(false);
-  //   const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isChecked);
-  //   if (filteredSavedMovies.length === 0) {
-  //     setIsNotFoundErrorShown(true);
-  //   }
-  //   setFilteredSavedMoviesArray(filteredSavedMovies);
-  // };
 
   const handleLikeBtnClick = async (movieData) => {
     const newSavedMovie = await mainApi
