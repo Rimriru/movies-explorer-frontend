@@ -5,9 +5,9 @@ export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRen
   return (
     <section className={`movies-cards ${moviesArray.length !== 0 ? "movies-cards_visible" : ""}`}>
       <ul className="movies-cards__list">
-        {moviesArray && moviesArray.slice(0, moviesToRender).map((movie, i) => {
+        {moviesArray && moviesArray.slice(0, moviesToRender).map((movie) => {
           return (
-            <li key={i}>
+            <li key={isListInSaved? movie.movieId : movie.id}>
               <MoviesCard
                 nameRU={movie.nameRU}
                 nameEN={movie.nameEN}
