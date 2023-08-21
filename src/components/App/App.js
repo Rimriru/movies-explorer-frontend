@@ -43,7 +43,6 @@ function App() {
 
   useEffect(() => {
     checkToken();
-    console.log(checkToken());
     setError("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -57,7 +56,6 @@ function App() {
         } else {
           setCurrentUser(res);
           setIsLoggedIn(true);
-          navigate("/movies");
         }
       })
       .catch((error) => {
@@ -135,6 +133,7 @@ function App() {
           setError(res.message || "При авторизации произошла ошибка.");
         } else {
           checkToken();
+          navigate("/movies");
         }
       })
       .catch((err) => {
