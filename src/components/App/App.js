@@ -135,8 +135,6 @@ function App() {
           setError(res.message || "При авторизации произошла ошибка.");
         } else {
           checkToken();
-          // setIsLoggedIn(true);
-          // navigate("/movies");
         }
       })
       .catch((err) => {

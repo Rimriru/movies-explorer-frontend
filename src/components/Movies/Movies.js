@@ -55,7 +55,6 @@ export default function Movies({
 
   const handleCheckboxChange = (title, isChecked) => {
     onChange(title, isChecked);
-    // setPreviousSearch({ title: title, moviesArray: newMovieArray });
   };
 
   return (
@@ -84,7 +83,7 @@ export default function Movies({
         <span
           className={`movies__error ${
             isApiErrorShown || isNotFoundErrorShown
-              ? // previousSearch.moviesArray.length === 0
+              ?
                 "movies__error_visible"
               : ""
           }`}

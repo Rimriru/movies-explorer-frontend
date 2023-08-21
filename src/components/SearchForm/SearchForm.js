@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import "./SearchForm.css";
 
 export default function SearchForm({ isInSaved, onSubmit, onChange, previousSearchValue, wasCheckboxChecked }) {
-  // const wasCheckboxChecked = localStorage.getItem("isCheckboxChecked");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(wasCheckboxChecked !== null && !isInSaved ? wasCheckboxChecked === 'true' : true);
   const formValidation = useFormWithValidation();
   const searchInputError = formValidation.errors.title;
