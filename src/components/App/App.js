@@ -182,7 +182,6 @@ function App() {
       if (filteredArray.length === 0) {
         setIsNotFoundErrorShown(true);
       }
-      console.log(filteredArray);
       setFilteredMoviesArray(filteredArray);
       localStorage.setItem(
         "filteredMoviesArray",
