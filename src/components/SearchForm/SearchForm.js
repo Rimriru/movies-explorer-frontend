@@ -9,6 +9,14 @@ export default function SearchForm({ isInSaved, onSubmit, onChange, previousSear
   const searchInputError = formValidation.errors.title;
 
   useEffect(() => {
+    if (isInSaved) {
+      formValidation.resetForm();
+      setIsCheckboxChecked(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (!isInSaved) {
       localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
     }
@@ -25,8 +33,10 @@ export default function SearchForm({ isInSaved, onSubmit, onChange, previousSear
   const handleCheckboxChange = (e) => {
     const givenTitle = isInSaved ? formValidation.values.title : localStorage.getItem("title");
     setIsCheckboxChecked(e.target.checked);
-    if (givenTitle) {
+    if (givenTitle !== "") {
       onChange(givenTitle, e.target.checked);
+    } else if (isInSaved && !givenTitle) {
+      onChange(e.target.checked);
     }
   };
 

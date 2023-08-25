@@ -1,3 +1,18 @@
+const filterForDuration = (isCheckboxChecked, duration) => {
+  return !isCheckboxChecked ? duration > 0 : duration <= 40;
+};
+
+const filterMoviesByDuration = (arr, isCheckboxChecked) => {
+  if (arr) {
+    const filteredMoviesArrayByDuration = arr.filter((movie) =>
+      filterForDuration(isCheckboxChecked, movie.duration)
+    );
+    return filteredMoviesArrayByDuration;
+  } else {
+    return [];
+  }
+};
+
 const filterMovieArray = (arr, title, isCheckboxChecked) => {
   const searchMovieTitleLowered = title.toLowerCase();
   const isTitleLatin = /[a-z]/.test(searchMovieTitleLowered);
@@ -6,7 +21,8 @@ const filterMovieArray = (arr, title, isCheckboxChecked) => {
       (movie) =>
         (isTitleLatin ? movie.nameEN : movie.nameRU)
           .toLowerCase()
-          .includes(searchMovieTitleLowered) && (!isCheckboxChecked ? movie.duration > 40 : movie.duration > 0)
+          .includes(searchMovieTitleLowered) &&
+          filterForDuration(isCheckboxChecked, movie.duration)
     );
     return filteredMoviesArray;
   } else {
@@ -21,7 +37,7 @@ const showMovieArray = (arr, title, isCheckboxChecked) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const isCardLiked = (savedMoviesArray, movieArray) => {
   if (savedMoviesArray && movieArray) {
@@ -39,4 +55,4 @@ const isCardLiked = (savedMoviesArray, movieArray) => {
   }
 };
 
-export { showMovieArray, isCardLiked };
+export { filterMoviesByDuration, showMovieArray, isCardLiked };

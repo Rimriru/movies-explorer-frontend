@@ -30,7 +30,7 @@
 .profile__label:first-child {
   border-bottom: var(--line-color) 1px solid;
   padding-bottom: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .profile__input {
@@ -55,13 +55,29 @@
 }
 
 .profile__btn-container {
-  margin-top: 220px;
+  margin-top: 180px;
+  text-align: center;
+}
+
+.profile__success-message {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  color: #3ddc84;
+  min-height: 17px;
+  visibility: hidden;
+  margin: 0;
+}
+
+.profile__success-message_visible {
+  visibility: visible;
 }
 
 .profile__btn {
   cursor: pointer;
   opacity: 1;
-  transition: .3s;
+  transition: 0.3s;
   background-color: transparent;
   border: none;
   padding: 0;
@@ -74,11 +90,12 @@
 }
 
 .profile__btn:hover {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .profile__btn:not(:last-child) {
   margin-bottom: 14px;
+  margin-top: 22px;
 }
 
 .profile__btn:last-child {
@@ -91,7 +108,7 @@
   border: none;
   outline: none;
   opacity: 1;
-  transition: .3s;
+  transition: 0.3s;
   color: var(--text-color);
   font-size: 14px;
   font-weight: 500;
@@ -102,12 +119,12 @@
 }
 
 .profile__submit-btn:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .profile__submit-btn:disabled {
-  background: #F8F8F8;
-  color: #C2C2C2;
+  background: #f8f8f8;
+  color: #c2c2c2;
 }
 
 @media screen and (max-width: 768px) {
@@ -120,7 +137,7 @@
   }
 
   .profile__btn-container {
-    margin-top: 210px;
+    margin-top: 170px;
   }
 }
 
@@ -135,7 +152,7 @@
   }
 
   .profile__btn-container {
-    margin-top: 379px;
+    margin-top: 340px;
   }
 
   .profile__btn {

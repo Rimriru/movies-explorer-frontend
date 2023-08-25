@@ -1,9 +1,9 @@
-const headerRoutes = ['/', '/movies', '/saved-movies', '/profile'];
+const HEADER_ROUTES = ['/', '/movies', '/saved-movies', '/profile'];
 
-const footerRoutes = ['/', '/movies', '/saved-movies'];
+const FOOTER_ROUTES = ['/', '/movies', '/saved-movies'];
 
-const moviesApiErrorMessage = 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.';
+const MOVIES_API_ERROR_MESSAGE = 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.';
 
-const notFoundErrorMessage = 'Ничего не найдено';
+const NOT_FOUND_ERROR_MESSAGE = 'Ничего не найдено';
 
-export { headerRoutes, footerRoutes, moviesApiErrorMessage, notFoundErrorMessage };
+export { HEADER_ROUTES, FOOTER_ROUTES, MOVIES_API_ERROR_MESSAGE, NOT_FOUND_ERROR_MESSAGE };

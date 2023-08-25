@@ -2,7 +2,7 @@ import AuthLoginForm from "../AuthRegisterForm/AuthRegisterForm";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useFormWithValidation }  from "../../utils/formValidation";
 import { Link } from "react-router-dom";
-import { emailRegExp, nameRegExp } from "../../utils/formValidation";
+import { EMAIL_REG_EXP, NAME_REG_EXP } from "../../utils/formValidation";
 import "./Register.css";
 
 export default function Register({ onSubmit, onChange, error }) {
@@ -12,9 +12,8 @@ export default function Register({ onSubmit, onChange, error }) {
   const emailError = formValidation.errors.email;
   const passwordError = formValidation.errors.password;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formValidation.values);
+  const handleSubmit = (submitBtnStateSetter) => {
+    onSubmit(formValidation.values, submitBtnStateSetter);
   };
 
   const handleChange = (e) => {
@@ -39,7 +38,7 @@ export default function Register({ onSubmit, onChange, error }) {
               minLength={2}
               maxLength={30}
               placeholder="Введите Ваше имя"
-              pattern={nameRegExp}
+              pattern={NAME_REG_EXP}
               autoComplete="false"
               onChange={handleChange}
             />
@@ -54,7 +53,7 @@ export default function Register({ onSubmit, onChange, error }) {
               required
               placeholder="Введите Ваш E-mail"
               onChange={handleChange}
-              pattern={emailRegExp}
+              pattern={EMAIL_REG_EXP}
               autoComplete="false"
             />
           </label>

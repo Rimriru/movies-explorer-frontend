@@ -2,7 +2,7 @@ import AuthRegisterForm from "../AuthRegisterForm/AuthRegisterForm";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useFormWithValidation }  from "../../utils/formValidation";
 import { Link } from "react-router-dom";
-import { emailRegExp } from "../../utils/formValidation";
+import { EMAIL_REG_EXP } from "../../utils/formValidation";
 import "./Login.css";
 
 export default function Login({ onSubmit, onChange, error }) {
@@ -10,9 +10,8 @@ export default function Login({ onSubmit, onChange, error }) {
   const emailError = formValidation.errors.email;
   const passwordError = formValidation.errors.password;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formValidation.values);
+  const handleSubmit = (submitBtnStateSetter) => {
+    onSubmit(formValidation.values, submitBtnStateSetter);
   };
 
   const handleChange = (e) => {
@@ -36,7 +35,7 @@ export default function Login({ onSubmit, onChange, error }) {
               type="email"
               required
               placeholder="Введите Ваш E-mail"
-              pattern={emailRegExp}
+              pattern={EMAIL_REG_EXP}
               autoComplete="false"
               onChange={handleChange}
             />

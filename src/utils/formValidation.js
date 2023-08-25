@@ -39,8 +39,8 @@ function useFormWithValidation() {
   return { values, handleChange, errors, isValid, resetForm };
 }
 
-const emailRegExp = '^[\\-A-Za-z0-9_.]*@[A-Za-z]*\\.[A-Za-z]{2,}$';
-const nameRegExp = '^[\\-A-Za-zА-Яа-я\\s]*$';
+const EMAIL_REG_EXP = '^[\\-A-Za-z0-9_.]*@[A-Za-z]*\\.[A-Za-z]{2,}$';
+const NAME_REG_EXP = '^[\\-A-Za-zА-Яа-я\\s]*$';
 
 
-export { useFormWithValidation, emailRegExp, nameRegExp }
+export { useFormWithValidation, EMAIL_REG_EXP, NAME_REG_EXP }

@@ -2,13 +2,15 @@ import { useContext, useState, useEffect } from "react";
 import ApiErrorMessage from "../ApiErrorMessage/ApiErrorMessage";
 import { useFormWithValidation } from "../../utils/formValidation";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { nameRegExp, emailRegExp } from "../../utils/formValidation";
+import { EMAIL_REG_EXP, NAME_REG_EXP } from "../../utils/formValidation";
+import compareTwoObjects from "../../utils/functions.js";
 import "./Profile.css";
 
-export default function Profile({ onSignOut, onSubmit, onChange, error }) {
+export default function Profile({ onSignOut, onSubmit, onChange, error, isMessageVisible }) {
   const currentUserData = useContext(CurrentUserContext);
   const formValidation = useFormWithValidation();
   const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [isSubmitBtnDisabled, setIsSubmitBtnDisabled] = useState(false);
   const [userData, setUserData] = useState({ name: "", email: "" });
 
   useEffect(() => {
@@ -16,13 +18,14 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
   }, [currentUserData]);
 
   useEffect(() => {
-    if(error) {
+    if (error) {
       setIsInputDisabled(false);
     }
   }, [error]);
 
   const handleEditProfileBtnClick = () => {
     setIsInputDisabled(false);
+    setIsSubmitBtnDisabled(true);
   };
 
   const handleProfileFormSubmit = (e) => {
@@ -30,31 +33,32 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
     const { name, email } = formValidation.values;
     const valuesToSubmit = {
       name: name !== undefined ? name : userData.name,
-      email: email !== undefined ? email : userData.email
+      email: email !== undefined ? email : userData.email,
     };
-    onSubmit(valuesToSubmit);
-    if(!error) {
-      setIsInputDisabled(true);
+    const isEqual = compareTwoObjects(valuesToSubmit, userData);
+    if (isEqual) {
+      setIsSubmitBtnDisabled(true);
     } else {
-      setIsInputDisabled(false);
+      setIsSubmitBtnDisabled(true);
+      onSubmit(valuesToSubmit);
+      return !error ? setIsInputDisabled(true) : setIsInputDisabled(false);
     }
   };
 
   const handleSignOut = () => {
     onSignOut();
-  }; 
+  };
 
   const handleChange = (e) => {
     formValidation.handleChange(e);
     onChange();
-  }
+    setIsSubmitBtnDisabled(false);
+  };
 
   return (
     <main>
       <section className="profile">
-        <h1 className="profile__heading">{`Привет, ${
-          userData.name
-        }!`}</h1>
+        <h1 className="profile__heading">{`Привет, ${userData.name}!`}</h1>
         <form
           className="profile__form"
           method="POST"
@@ -71,7 +75,7 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
               maxLength={30}
               disabled={isInputDisabled}
               defaultValue={userData.name}
-              pattern={nameRegExp}
+              pattern={NAME_REG_EXP}
               onChange={handleChange}
             />
           </label>
@@ -84,12 +88,21 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
               type="email"
               disabled={isInputDisabled}
               defaultValue={userData.email}
-              pattern={emailRegExp}
+              pattern={EMAIL_REG_EXP}
               onChange={handleChange}
             />
           </label>
           {isInputDisabled ? (
             <div className="profile__btn-container">
+              <span
+                className={`profile__success-message${
+                  isMessageVisible
+                    ? " profile__success-message_visible"
+                    : ""
+                }`}
+              >
+                Данные профиля успешно изменены!
+              </span>
               <button
                 className="profile__btn"
                 type="button"
@@ -108,7 +121,13 @@ export default function Profile({ onSignOut, onSubmit, onChange, error }) {
           ) : (
             <>
               <ApiErrorMessage placement="profile" errorText={error} />
-              <button className="profile__submit-btn" type="submit" disabled={!formValidation.isValid || error}>
+              <button
+                className="profile__submit-btn"
+                type="submit"
+                disabled={
+                  !formValidation.isValid || error || isSubmitBtnDisabled
+                }
+              >
                 Сохранить
               </button>
             </>

@@ -50,13 +50,9 @@ export default function MoviesCard({
         trailerLink,
         thumbnail,
         movieId,
-      }).then(() => {
-          setIsMovieCardLiked(true);
-        })
-        .catch(error =>  console.log(error));
+      }, setIsMovieCardLiked);
     } else {
-      onDislike(movieId);
-      setIsMovieCardLiked(false);
+      onDislike(movieId, setIsMovieCardLiked);
     }
   };
 

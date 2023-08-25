@@ -3,8 +3,8 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Preloader from "../Preloader/Preloader";
 import { useEffect, useState } from "react";
 import {
-  moviesApiErrorMessage,
-  notFoundErrorMessage,
+  MOVIES_API_ERROR_MESSAGE,
+  NOT_FOUND_ERROR_MESSAGE,
 } from "../../utils/constants.js";
 import "./Movies.css";
 import { isCardLiked } from "../../utils/movieFilter.js";
@@ -89,8 +89,8 @@ export default function Movies({
           }`}
         >
           {isApiErrorShown
-            ? `${moviesApiErrorMessage}`
-            : `${notFoundErrorMessage}`}
+            ? `${MOVIES_API_ERROR_MESSAGE}`
+            : `${NOT_FOUND_ERROR_MESSAGE}`}
         </span>
       )}
     </main>

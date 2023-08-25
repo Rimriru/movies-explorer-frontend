@@ -1,9 +1,15 @@
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import SearchForm from "../SearchForm/SearchForm.js";
-import { notFoundErrorMessage } from "../../utils/constants.js";
+import { NOT_FOUND_ERROR_MESSAGE } from "../../utils/constants.js";
+import { useEffect } from "react";
 import "./SavedMovies.css";
 
-export default function SavedMovies({ moviesToRender, moviesArray, isNotFoundErrorShown, isTabOrMobile, onDislike, onSubmit, onChange }) {
+export default function SavedMovies({ moviesToRender, moviesArray, isNotFoundErrorShown, isTabOrMobile, changeTheSavedAtRender, onDislike, onSubmit, onChange }) {
+  useEffect(() => {
+    changeTheSavedAtRender();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className="saved-movies">
       <SearchForm isInSaved={true} onSubmit={onSubmit} onChange={onChange} />
@@ -15,7 +21,7 @@ export default function SavedMovies({ moviesToRender, moviesArray, isNotFoundErr
               : ""
           }`}
         >
-          {notFoundErrorMessage}
+          {NOT_FOUND_ERROR_MESSAGE}
         </span>
     </main>
   );

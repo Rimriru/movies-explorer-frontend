@@ -1,4 +1,5 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
+// import { useState, useEffect } from "react";
 import "./MoviesCardList.css";
 
 export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike, onDislike, isTabOrMobile }) {

@@ -16,12 +16,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { headerRoutes, footerRoutes } from "../../utils/constants.js";
+import { HEADER_ROUTES, FOOTER_ROUTES } from "../../utils/constants.js";
 import useWindowResize from "../../utils/windowResize";
 import mainApi from "../../utils/mainApi.js";
 import moviesApi from "../../utils/moviesApi.js";
 import ProtectedRouteElement from "../ProtectedRoute.js";
-import { showMovieArray } from "../../utils/movieFilter.js";
+import { filterMoviesByDuration, showMovieArray } from "../../utils/movieFilter.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 function App() {
@@ -35,6 +35,7 @@ function App() {
   const [filteredSavedMoviesArray, setFilteredSavedMoviesArray] = useState([]);
   const [isApiErrorShown, setIsApiErrorShown] = useState(false);
   const [isNotFoundErrorShown, setIsNotFoundErrorShown] = useState(false);
+  const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false);
   const [moviesToRender, setMoviesToRender] = useState(16);
   const currentLocation = useLocation();
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const checkToken = () => {
+  const checkToken = (navigateArg) => {
     mainApi
       .getUserInfo()
       .then((res) => {
@@ -56,6 +57,9 @@ function App() {
         } else {
           setCurrentUser(res);
           setIsLoggedIn(true);
+          if (navigateArg) {
+            navigate('/movies');
+          }
         }
       })
       .catch((error) => {
@@ -82,20 +86,21 @@ function App() {
         .then((res) => {
           if (Array.isArray(res)) {
             setSavedMoviesArray(res);
-            setFilteredSavedMoviesArray(res);
           } else if (res.message && res.statusCode === 404) {
             setSavedMoviesArray([]);
           }
         })
         .catch((error) => console.log(error));
-    } else {
-      setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
 
   useEffect(() => {
     setFilteredSavedMoviesArray(savedMoviesArray);
   }, [savedMoviesArray]);
+
+  const changeTheSavedAtRender = () => {
+    setFilteredSavedMoviesArray(savedMoviesArray);
+  };
 
   const handleSignOutBtnClick = () => {
     mainApi
@@ -119,7 +124,7 @@ function App() {
             res.message || "При регистрации пользователя произошла ошибка."
           );
         } else {
-          navigate("/signin");
+          handleLoginFormSubmit({ email, password });
         }
       })
       .catch((err) => setError(err.message));
@@ -132,8 +137,7 @@ function App() {
         if (res.message !== "Вы успешно залогинились!") {
           setError(res.message || "При авторизации произошла ошибка.");
         } else {
-          checkToken();
-          navigate("/movies");
+          checkToken(navigate);
         }
       })
       .catch((err) => {
@@ -150,6 +154,10 @@ function App() {
         } else {
           setError("");
           setCurrentUser(res);
+          setIsSuccessMessageVisible(true);
+          setTimeout(() => {
+            setIsSuccessMessageVisible(false);
+          }, 8000);
         }
       })
       .catch((error) => {
@@ -196,32 +204,44 @@ function App() {
 
   const handleSavedMoviesSearchFormFilter = (title, isCheckboxChecked) => {
     setIsNotFoundErrorShown(false);
-    const filteredSavedMovies = showMovieArray(savedMoviesArray, title, isCheckboxChecked);
-    if (filteredSavedMovies.length === 0) {
-      setIsNotFoundErrorShown(true);
+    const checkResultArray = (array) => {
+      if (array.length === 0) {
+        setIsNotFoundErrorShown(true);
+      }
+      setFilteredSavedMoviesArray(array);
     }
-    setFilteredSavedMoviesArray(filteredSavedMovies);
+    if (title) {
+      const filteredSavedMoviesWithTitle = showMovieArray(savedMoviesArray, title, isCheckboxChecked);
+      checkResultArray(filteredSavedMoviesWithTitle);
+    } else {
+      const filteredSavedMoviesWithoutTitle = filterMoviesByDuration(savedMoviesArray, isCheckboxChecked);
+      checkResultArray(filteredSavedMoviesWithoutTitle);
+    }
   }
 
-  const handleLikeBtnClick = async (movieData) => {
-    const newSavedMovie = await mainApi
+  const handleLikeBtnClick = (movieData, likeStateSetter) => {
+    mainApi
       .addUserMovie(movieData)
-      .then((res) => res)
+      .then((res) => {
+        likeStateSetter(true);
+        setSavedMoviesArray((state) => [...state, res]);
+      })
       .catch(console.error);
-    setSavedMoviesArray((state) => [...state, newSavedMovie]);
-    return newSavedMovie;
   };
 
-  const handleDislikeBtnClick = (movieId) => {
+  const handleDislikeBtnClick = (movieId, likeStateSetter) => {
     const movieInSaved = savedMoviesArray.find(
       (savedMovie) => savedMovie.movieId === movieId
     );
-    return mainApi
+    mainApi
       .removeUserMovie(movieInSaved._id)
       .then(() => {
         setSavedMoviesArray((state) =>
           state.filter((movie) => movie._id !== movieInSaved._id)
         );
+        if(likeStateSetter) {
+          likeStateSetter(false);
+        }
       })
       .catch(console.error);
   };
@@ -232,7 +252,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      {headerRoutes.find((route) => currentLocation.pathname === route) && (
+      {HEADER_ROUTES.find((route) => currentLocation.pathname === route) && (
         <Header isLoggedIn={isLoggedIn} />
       )}
       <Routes>
@@ -258,7 +278,7 @@ function App() {
                 onDislike={handleDislikeBtnClick}
               />
             ) : (
-              <Navigate to="/" replace />
+              <Navigate to="/" />
             )
           }
         />
@@ -273,12 +293,13 @@ function App() {
                 moviesArray={filteredSavedMoviesArray}
                 isNotFoundErrorShown={isNotFoundErrorShown}
                 isTabOrMobile={isTabOrMobile}
+                changeTheSavedAtRender={changeTheSavedAtRender}
                 onDislike={handleDislikeBtnClick}
                 onSubmit={handleSavedMoviesSearchFormFilter}
                 onChange={handleSavedMoviesSearchFormFilter}
               />
             ) : (
-              <Navigate to="/" replace />
+              <Navigate to="/" />
             )
           }
         />
@@ -293,35 +314,38 @@ function App() {
                 onSubmit={handleUserDataUpdate}
                 onChange={handleValidatedInputChange}
                 error={error}
+                isMessageVisible={isSuccessMessageVisible}
               />
             ) : (
-              <Navigate to="/" replace />
+              <Navigate to="/" />
             )
           }
         />
         <Route
           path="/signup"
-          element={
+          element={!isLoggedIn ? 
             <Register
               onSubmit={handleRegisterFormSubmit}
               onChange={handleValidatedInputChange}
               error={error}
-            />
+            /> : 
+            <Navigate to="/"/>
           }
         />
         <Route
           path="/signin"
-          element={
+          element={!isLoggedIn ? 
             <Login
               onSubmit={handleLoginFormSubmit}
               onChange={handleValidatedInputChange}
               error={error}
-            />
+            /> : 
+            <Navigate to="/"/>
           }
         />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/*" element={<NotFound isLoggedIn={isLoggedIn} check={checkToken}/>} />
       </Routes>
-      {footerRoutes.find((route) => currentLocation.pathname === route) && (
+      {FOOTER_ROUTES.find((route) => currentLocation.pathname === route) && (
         <Footer />
       )}
     </CurrentUserContext.Provider>
