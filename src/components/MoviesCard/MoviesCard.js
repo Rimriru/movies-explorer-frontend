@@ -1,16 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./MoviesCard.css";
 
-export default function MoviesCard({ title, link, duration, isInSaved }) {
+export default function MoviesCard({
+  nameRU,
+  nameEN,
+  country,
+  director,
+  year,
+  description,
+  image,
+  duration,
+  trailerLink,
+  isInSaved,
+  onLike,
+  onDislike,
+  thumbnail,
+  movieId,
+  isLiked,
+  isTabOrMobile
+}) {
   const [isMovieCardLiked, setIsMovieCardLiked] = useState(false);
-  const [isRemoveBtnVisible, setIsRemoveBtnVisible] = useState(false);
+  const [isRemoveBtnVisible, setIsRemoveBtnVisible] = useState(isTabOrMobile ? true : false);
 
-  const handleLikeBtnClick = () => {
-    setIsMovieCardLiked(!isMovieCardLiked);
+  const countDuration = (durationInMins) => {
+    const hours = Math.floor(durationInMins / 60);
+    const minutes = durationInMins % 60;
+    return { hours, minutes };
   };
 
-  const handleRemoveBtnClick = (e) => {
-    e.target.closest('.movie-card').remove();
+  useEffect(() => {
+    if (!isInSaved && isLiked) {
+      setIsMovieCardLiked(true);
+    } else if (!isInSaved && !isLiked) {
+      setIsMovieCardLiked(false);
+    }
+  }, [isInSaved, isLiked]);
+
+  const handleLikeBtnClick = () => {
+    if (!isMovieCardLiked) {
+      onLike({
+        nameRU,
+        nameEN,
+        country,
+        director,
+        year,
+        description,
+        image,
+        duration,
+        trailerLink,
+        thumbnail,
+        movieId,
+      }, setIsMovieCardLiked);
+    } else {
+      onDislike(movieId, setIsMovieCardLiked);
+    }
+  };
+
+  const handleRemoveBtnClick = () => {
+    onDislike(movieId);
   };
 
   const handleMovieCardHoverOn = () => {
@@ -22,13 +69,36 @@ export default function MoviesCard({ title, link, duration, isInSaved }) {
   };
 
   return (
-    <article className="movie-card" onMouseEnter={handleMovieCardHoverOn} onMouseLeave={handleMovieCardHoverOut}>
-      <img className="movie-card__image" src={link} alt={title}/>
+    <article
+      className="movie-card"
+      onMouseEnter={handleMovieCardHoverOn}
+      onMouseLeave={handleMovieCardHoverOut}
+    >
+      <a
+        className="movie-card__trailer-link"
+        href={trailerLink}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img className="movie-card__image" src={image} alt={nameRU} />
+      </a>
       <div className="movie-card__container">
-        <h2 className="movie-card__title">{title}</h2>
-        <button className={`movie-card__like-btn ${isMovieCardLiked ? "movie-card__like-btn_type_active" : ""} ${isInSaved ? "movie-card__like-btn_type_remove" : ""} ${isInSaved && isRemoveBtnVisible ? "movie-card__like-btn_visible" : ""}`} onClick={isInSaved ? handleRemoveBtnClick : handleLikeBtnClick} type="button"></button>
+        <h2 className="movie-card__title">{nameRU}</h2>
+        <button
+          className={`movie-card__like-btn ${
+            isMovieCardLiked ? "movie-card__like-btn_type_active" : ""
+          } ${isInSaved ? "movie-card__like-btn_type_remove" : ""} ${
+            isInSaved && isRemoveBtnVisible
+              ? "movie-card__like-btn_visible"
+              : ""
+          }`}
+          onClick={isInSaved ? handleRemoveBtnClick : handleLikeBtnClick}
+          type="button"
+        ></button>
       </div>
-      <p className="movie-card__duration">{duration}</p>
+      <p className="movie-card__duration">{`${countDuration(duration).hours}ч ${
+        countDuration(duration).minutes
+      }м`}</p>
     </article>
   );
-};
+}

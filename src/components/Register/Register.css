@@ -23,7 +23,7 @@
   font-weight: 400;
   line-height: normal;
   color: var(--text-color-dimmed);
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
 }
 
 .auth-content__input {
@@ -55,7 +55,7 @@
   font-size: 10px;
   font-weight: 400;
   line-height: normal;
-  min-height: 18px;
+  min-height: 24px;
   display: block;
 }
 

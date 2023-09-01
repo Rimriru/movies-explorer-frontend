@@ -1,16 +1,22 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./NotFound.css";
 
-export default function NotFound() {
+export default function NotFound({ isLoggedIn }) {
   const navigate = useNavigate();
 
-  const handleBackLinkClick = () => navigate(-1, { replace: true });
+  const handleClick = () => {
+    if (isLoggedIn) {
+      navigate('/movies', { replace: true });
+    } else {
+      navigate('/', { replace: true });
+    }
+  };
 
   return (
     <section className="not-found">
       <h1 className="not-found__heading">404</h1>
       <p className="not-found__text">Страница не найдена</p>
-      <Link className="not-found__link" onClick={handleBackLinkClick}>Назад</Link>
+      <button className="not-found__button" onClick={handleClick}>Назад</button>
     </section>
   );
 };

@@ -1,34 +1,38 @@
-import { useState } from "react";
-import Preloader from "../Preloader/Preloader";
 import MoviesCard from "../MoviesCard/MoviesCard";
+// import { useState, useEffect } from "react";
 import "./MoviesCardList.css";
 
-export default function MoviesCardList({ moviesArray, isListInSaved }) {
-  const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
-  const [moviesToRender, setMoviesToRender] = useState(16);
-
-  const handlerMoreBtnClick = () => setMoviesToRender(moviesToRender + 4);
-
+export default function MoviesCardList({ moviesArray, isListInSaved, moviesToRender, onClick, onLike, onDislike, isTabOrMobile }) {
   return (
-    <section className="movies-cards">
-      <Preloader isVisible={isPreloaderVisible} />
+    <section className={`movies-cards ${moviesArray.length !== 0 ? "movies-cards_visible" : ""}`}>
       <ul className="movies-cards__list">
-        {moviesArray.slice(0, moviesToRender).map((movie, i) => {
+        {moviesArray && moviesArray.slice(0, moviesToRender).map((movie) => {
           return (
-            <li>
+            <li key={isListInSaved? movie.movieId : movie.id}>
               <MoviesCard
-                key={i}
-                title={movie.title}
-                link={movie.link}
+                nameRU={movie.nameRU}
+                nameEN={movie.nameEN}
+                trailerLink={movie.trailerLink}
+                image={isListInSaved ? movie.image : `https://api.nomoreparties.co/${movie.image.url}`}
                 duration={movie.duration}
+                country={movie.country}
+                director={movie.director}
+                year={movie.year}
+                description={movie.description}
+                thumbnail={isListInSaved ? movie.thumbnail : `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}
+                movieId={isListInSaved? movie.movieId : movie.id}
+                isLiked={movie.isLiked}
                 isInSaved={isListInSaved}
+                isTabOrMobile={isTabOrMobile}
+                onLike={onLike}
+                onDislike={onDislike}
               />
             </li>
           );
         })}
       </ul>
-      {moviesArray.length > moviesToRender && (
-        <button className="movies-cards__btn" onClick={handlerMoreBtnClick} type="button">
+      {!isListInSaved && moviesArray.length > moviesToRender && (
+        <button className="movies-cards__btn" onClick={onClick} type="button">
           Ещё
         </button>
       )}
